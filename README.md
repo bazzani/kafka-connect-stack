@@ -1,5 +1,5 @@
 docker-compose stack based off the Confluent stack config
-at https://github.com/confluentinc/cp-all-in-one/tree/7.4.0-post/cp-all-in-one
+at https://github.com/confluentinc/cp-all-in-one/tree/7.3.0-post/cp-all-in-one
 
 # Ports
 
