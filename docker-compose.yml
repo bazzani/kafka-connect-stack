@@ -1,4 +1,7 @@
 # From https://github.com/confluentinc/cp-all-in-one/blob/7.4.0-post/cp-all-in-one/docker-compose.yml
+
+# todo failure for CC to talk to connect https://github.com/confluentinc/cp-all-in-one/issues/94
+
 ---
 version: '2'
 services:
@@ -104,6 +107,7 @@ services:
       CONTROL_CENTER_REPLICATION_FACTOR: 1
       CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
+      CONTROL_CENTER_CONNECT_HEALTHCHECK_ENDPOINT: '/connectors'
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
 
