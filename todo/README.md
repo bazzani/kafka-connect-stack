@@ -13,5 +13,8 @@ This project has still got some work TODO:
 5. [ ] Add automated integration test to start docker compose stack, produce message on a topic, and verify data is in
    the DB
 
-6. [ ] Add multiple connect instance services by exposing dynamic `CONNECT_REST_ADVERTISED_HOST_NAME`, ensuring
+6. [ ] Add cURL commands etc. to view all connector statuses (see this page [Inspect Config and Status for a Connector
+   ](https://developer.confluent.io/courses/kafka-connect/rest-api/#inspect-config-and-status-for-a-connector)) 
+
+7. [ ] Add multiple connect instance services by exposing dynamic `CONNECT_REST_ADVERTISED_HOST_NAME`, ensuring
    connectors get created correctly on each deploy

@@ -13,3 +13,7 @@ To connect to services in Docker, refer to the following ports:
 - Confluent Control Center: [9021](http://localhost:9021)
 - ksqlDB: 8088
 - Confluent REST Proxy: 8082
+
+---
+
+Some outstanding tasks to make the project more complete can be found [here](todo/README.md)
