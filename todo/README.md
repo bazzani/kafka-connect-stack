@@ -18,3 +18,5 @@ This project has still got some work TODO:
 
 7. [ ] Add multiple connect instance services by exposing dynamic `CONNECT_REST_ADVERTISED_HOST_NAME`, ensuring
    connectors get created correctly on each deploy
+
+8. [ ] Improve logging etc. using ENV VARS (e.g. `CONNECT_LOG4J_APPENDER_STDOUT_LAYOUT_CONVERSIONPATTERN: "[%d] %p %X{connector.context}%m (%c:%L)%n"`)
