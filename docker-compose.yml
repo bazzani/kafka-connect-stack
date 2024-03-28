@@ -58,7 +58,9 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   connect:
-    image: bevans/connect:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     hostname: connect
     container_name: connect
     depends_on:
