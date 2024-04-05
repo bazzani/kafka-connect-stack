@@ -21,6 +21,7 @@ services:
     container_name: broker
     depends_on:
       - zookeeper
+#    restart: unless-stopped
     ports:
       - "9092:9092"
       - "9101:9101"
@@ -181,3 +182,16 @@ services:
       KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: kafka_connect_user
+      POSTGRES_PASSWORD: kafka_connect_password
+      POSTGRES_DB: kafka_connect
+    volumes:
+      - ./db/init-db_final-fantasy-vii.sql:/docker-entrypoint-initdb.d/init-db_final-fantasy-vii.sql
