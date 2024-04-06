@@ -1,0 +1,72 @@
+{
+  "type": "record",
+  "name": "FF_VII_Ally_Update",
+  "namespace": "FF_VII",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "int"
+    },
+    {
+      "name": "exp",
+      "type": "long"
+    },
+    {
+      "name": "hp",
+      "type": "int"
+    },
+    {
+      "name": "mp",
+      "type": "int"
+    },
+    {
+      "name": "win_loss_ratio",
+      "type": "float"
+    },
+    {
+      "name": "ps_store_cost",
+      "type": "double"
+    },
+    {
+      "name": "name_in_bytes",
+      "type": [
+        "null",
+        "bytes"
+      ],
+      "default": null
+    },
+    {
+      "name": "weapon",
+      "type": {
+        "name": "weapon",
+        "type": "record",
+        "namespace": "FF_VII.Weapon",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "attack",
+            "type": "int"
+          },
+          {
+            "name": "magic_attack",
+            "type": "int"
+          }
+        ]
+      }
+    },
+    {
+      "name": "materia",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    }
+  ]
+}

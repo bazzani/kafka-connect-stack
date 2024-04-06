@@ -17,4 +17,13 @@ USER appuser
 RUN confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:10.7.6 && \
     confluent-hub install --no-prompt confluentinc/kafka-connect-datagen:0.6.5
 
+USER root
+RUN yum install jq -y
+USER appuser
+
+COPY connect-scripts /connect-scripts
+COPY connector-configs /connector-configs
+COPY ./build/libs/* /usr/share/java/kafka
 # build with the command `docker build -t bevans/kafka-connect .`
+
+ENTRYPOINT ["sh","/connect-scripts/connect-entrypoint.sh"]

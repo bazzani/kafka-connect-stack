@@ -67,6 +67,7 @@ services:
     depends_on:
       - broker
       - schema-registry
+      - postgres
     ports:
       - "8083:8083"
     environment:

@@ -7,8 +7,8 @@ This project has still got some work TODO:
 
 3. [x] Add Postgres service to docker compose
 
-4. [ ] Add script to Dockerfile to create simple `JdbcSinkConnector` on startup, including DB table `autocreate=true`
-    1. [ ] Use AVRO Schema to produce message on topic to test
+4. [x] Add script to Dockerfile to create simple `JdbcSinkConnector` on startup, including DB table `autocreate=true`
+    - [x] Use AVRO Schema to produce message on topic to test
 
 5. [ ] Add automated integration test to start docker compose stack, produce message on a topic, and verify data is in
    the DB

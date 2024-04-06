@@ -1,0 +1,28 @@
+{
+  "name": "FF_VII_Ally_Updates_Connector",
+  "config": {
+    "name": "FF_VII_Ally_Updates_Connector",
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "topics": "ff_vii.ally_updates.v1",
+    "errors.deadletterqueue.topic.name": "FF_VII_Ally_Updates_Connector_DLQ",
+    "errors.deadletterqueue.topic.replication.factor": "1",
+    "connection.url": "jdbc:postgresql://postgres:5432/kafka_connect",
+    "connection.user": "kafka_connect_user",
+    "connection.password": "kafka_connect_password",
+    "table.name.format": "final_fantasy_vii_allies",
+    "pk.mode": "record_value",
+    "pk.fields": "name,update_ts",
+    "auto.create": "false",
+    "auto.evolve": "false",
+    "transforms": "insertTimestamp, drop_name_in_bytes, materiaJsonStringArray, weaponJsonStruct",
+    "transforms.insertTimestamp.type": "org.apache.kafka.connect.transforms.InsertField$Value",
+    "transforms.insertTimestamp.timestamp.field": "update_ts",
+    "transforms.drop_name_in_bytes.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "transforms.drop_name_in_bytes.blacklist": "name_in_bytes",
+    "fields.whitelist": "name,age,exp,hp,mp,win_loss_ratio,ps_store_cost,materia,weapon",
+    "transforms.materiaJsonStringArray.type": "com.bevans.kafka.ArrayToJsonTransform",
+    "transforms.materiaJsonStringArray.arrayField": "materia",
+    "transforms.weaponJsonStruct.type": "com.bevans.kafka.StructToJsonTransform",
+    "transforms.weaponJsonStruct.structField": "weapon"
+  }
+}
