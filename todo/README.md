@@ -3,7 +3,7 @@ This project has still got some work TODO:
 1. [ ] Add docker compose commands etc, to run the stack from the CLI (
    including [docker compose v2](https://docs.docker.com/compose/migrate/))
 
-2. [ ] Add custom SMT to insert a value in the SinkRecord, and gradle build details etc.
+2. [x] Add custom SMT to insert a value in the SinkRecord, and gradle build details etc.
 
 3. [x] Add Postgres service to docker compose
 
