@@ -20,9 +20,9 @@
     "transforms.drop_name_in_bytes.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
     "transforms.drop_name_in_bytes.blacklist": "name_in_bytes",
     "fields.whitelist": "name,age,exp,hp,mp,win_loss_ratio,ps_store_cost,materia,weapon",
-    "transforms.materiaJsonStringArray.type": "com.bevans.kafka.ArrayToJsonTransform",
+    "transforms.materiaJsonStringArray.type": "com.bevans.kafka.connect.transforms.ArrayToJsonTransform",
     "transforms.materiaJsonStringArray.arrayField": "materia",
-    "transforms.weaponJsonStruct.type": "com.bevans.kafka.StructToJsonTransform",
+    "transforms.weaponJsonStruct.type": "com.bevans.kafka.connect.transforms.StructToJsonTransform",
     "transforms.weaponJsonStruct.structField": "weapon"
   }
 }

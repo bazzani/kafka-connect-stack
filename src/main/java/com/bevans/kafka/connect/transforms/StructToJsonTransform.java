@@ -1,31 +1,29 @@
-package com.bevans.kafka;
+package com.bevans.kafka.connect.transforms;
 
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.transforms.util.SimpleConfig;
-import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.util.List;
-
-public class ArrayToJsonTransform extends BaseToJsonTransform {
-    private static final String PURPOSE = "converting Connect String Array to JSON String Array";
+public class StructToJsonTransform extends BaseToJsonTransform {
+    private static final String PURPOSE = "convert Connect Struct to JSON String Object";
 
     interface ConfigName {
-        String ARRAY_FIELD_CONFIG = "arrayField";
+        String STRUCT_FIELD_CONFIG = "structField";
     }
 
     private static final ConfigDef CONFIG_DEF = new ConfigDef()
-            .define(ConfigName.ARRAY_FIELD_CONFIG, ConfigDef.Type.STRING, ConfigDef.NO_DEFAULT_VALUE,
+            .define(ConfigName.STRUCT_FIELD_CONFIG, ConfigDef.Type.STRING, ConfigDef.NO_DEFAULT_VALUE,
                     ConfigDef.CompositeValidator.of(
                             new ConfigDef.NonNullValidator(),
                             new ConfigDef.NonEmptyString()
                     ),
                     ConfigDef.Importance.HIGH,
-                    "The field in the record with the String array"
+                    "The field in the record with the Struct"
             );
 
-    private String arrayFieldName;
+    private String structFieldName;
 
     @Override
     protected String purpose() {
@@ -34,25 +32,32 @@ public class ArrayToJsonTransform extends BaseToJsonTransform {
 
     @Override
     protected String fieldName() {
-        return arrayFieldName;
+        return structFieldName;
     }
 
     @Override
     protected Struct makeUpdatedValue(Struct value, Schema updatedSchema) {
         var updatedValue = new Struct(updatedSchema);
 
-        value.schema().fields().stream()
-                .filter(field -> !field.name().equals(arrayFieldName))
+        updatedSchema.fields()
+                .stream()
+                .filter(field -> !field.name().equals(fieldName()))
                 .forEach(field -> updatedValue.put(field.name(), value.get(field.name())));
 
-        List<String> array = value.getArray(arrayFieldName);
-        updatedValue.put(arrayFieldName, getArrayJson(array));
+        Struct struct = value.getStruct(fieldName());
+        updatedValue.put(fieldName(), getStructJson(struct));
 
         return updatedValue;
     }
 
-    private String getArrayJson(List<String> array) {
-        return new JSONArray(array).toString();
+    private String getStructJson(Struct struct) {
+        var jsonObject = new JSONObject();
+
+        struct.schema()
+                .fields()
+                .forEach(field -> jsonObject.put(field.name(), struct.get(field.name())));
+
+        return jsonObject.toString();
     }
 
     @Override
@@ -62,6 +67,6 @@ public class ArrayToJsonTransform extends BaseToJsonTransform {
 
     @Override
     protected void getConfigValues(SimpleConfig config) {
-        arrayFieldName = config.getString(ConfigName.ARRAY_FIELD_CONFIG);
+        structFieldName = config.getString(ConfigName.STRUCT_FIELD_CONFIG);
     }
 }
