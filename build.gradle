@@ -15,13 +15,20 @@ final def CONNECT_VERSION = '3.5.0'
 
 dependencies {
     implementation 'org.json:json:20240303'
-    implementation ("org.apache.kafka:connect-api:$CONNECT_VERSION")
+    implementation("org.apache.kafka:connect-api:$CONNECT_VERSION")
     compileOnly("org.apache.kafka:connect-transforms:$CONNECT_VERSION")
 
+    //
+    // Unit test dependencies
+    //
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.assertj:assertj-core:3.24.2'
     testImplementation("org.apache.kafka:connect-transforms:$CONNECT_VERSION")
+}
+
+jar {
+    archiveClassifier = 'SMT'
 }
 
 test {
@@ -33,6 +40,20 @@ jacocoTestReport {
     dependsOn test
     reports {
         xml.required = true
+    }
+}
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                minimum = 0.9
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.8
+            }
+        }
     }
 }
 
