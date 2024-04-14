@@ -21,3 +21,9 @@ This project has still got some work TODO:
    1. [ ] todo check consumer group name prefix to support multiple instances of connect
 
 8. [ ] Improve logging etc. using ENV VARS (e.g. `CONNECT_LOG4J_APPENDER_STDOUT_LAYOUT_CONVERSIONPATTERN: "[%d] %p %X{connector.context}%m (%c:%L)%n"`)
+
+9. [ ] Add Spring Boot REST APIs to support POSTing new FF VII Ally updates
+
+10. [ ] Use a multi-project gradle setup, one for SMTs, one for Spring Boot app(s) - https://docs.gradle.org/current/userguide/multi_project_builds.html
+    
+11. [ ] Add jvm debug settings to `connect` container/service and info in README -- `-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005`   
