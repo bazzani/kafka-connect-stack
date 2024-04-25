@@ -1,14 +1,8 @@
 plugins {
-    id 'java'
+    id 'bevans.java-conventions'
+    id 'java-library'
     id 'jacoco'
     id 'org.sonarqube' version '4.4.1.3373'
-}
-
-group = 'com.bevans.kafka'
-version = '1.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
 }
 
 final def CONNECT_VERSION = '3.5.0'
@@ -21,18 +15,10 @@ dependencies {
     //
     // Unit test dependencies
     //
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.assertj:assertj-core:3.24.2'
     testImplementation("org.apache.kafka:connect-transforms:$CONNECT_VERSION")
 }
 
-jar {
-    archiveClassifier = 'SMT'
-}
-
 test {
-    useJUnitPlatform()
     finalizedBy jacocoTestReport
 }
 
@@ -65,4 +51,8 @@ sonar {
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
         property("sonar.junit.reportPaths", "build/test-results/test")
     }
+}
+
+tasks.named('check'){
+    dependsOn jacocoTestCoverageVerification
 }
