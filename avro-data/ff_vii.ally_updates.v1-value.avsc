@@ -1,7 +1,7 @@
 {
   "type": "record",
-  "name": "FF_VII_Ally_Update",
-  "namespace": "FF_VII",
+  "name": "FFViiAllyUpdate",
+  "namespace": "com.bevans.avro.ffvii",
   "fields": [
     {
       "name": "name",
@@ -24,15 +24,15 @@
       "type": "int"
     },
     {
-      "name": "win_loss_ratio",
+      "name": "winLossRatio",
       "type": "float"
     },
     {
-      "name": "ps_store_cost",
+      "name": "psStoreCost",
       "type": "double"
     },
     {
-      "name": "name_in_bytes",
+      "name": "nameInBytes",
       "type": [
         "null",
         "bytes"
@@ -42,9 +42,9 @@
     {
       "name": "weapon",
       "type": {
-        "name": "weapon",
+        "name": "FFViiAllyWeapon",
         "type": "record",
-        "namespace": "FF_VII.Weapon",
+        "namespace": "com.bevans.avro.ffvii.weapon",
         "fields": [
           {
             "name": "name",
@@ -55,7 +55,7 @@
             "type": "int"
           },
           {
-            "name": "magic_attack",
+            "name": "magicAttack",
             "type": "int"
           }
         ]

@@ -1,5 +1,5 @@
 -- table used to store live updates of each ally as you play the game
-create table if not exists final_fantasy_vii_allies
+create table if not exists final_fantasy_vii_ally_update
 (
     name           text      not null,
     update_ts      timestamp not null,
@@ -11,9 +11,9 @@ create table if not exists final_fantasy_vii_allies
     ps_store_cost  float8,
     weapon         jsonb     not null,
     materia        jsonb,
-    constraint final_fantasy_vii_allies_pk
+    constraint final_fantasy_vii_ally_update_pk
         primary key (name, update_ts)
 );
 
-alter table final_fantasy_vii_allies
+alter table final_fantasy_vii_ally_update
     owner to kafka_connect_user;
