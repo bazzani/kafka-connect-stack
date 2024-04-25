@@ -1,0 +1,171 @@
+plugins {
+    id 'bevans.java-conventions'
+
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+
+    id 'io.freefair.lombok' version '8.6'
+    id 'com.avast.gradle.docker-compose' version '0.17.6'
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
+}
+
+dependencies {
+    implementation(project(':connect-smt-lib'))
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.kafka:spring-kafka'
+
+    implementation 'io.confluent:kafka-avro-serializer:7.6.0'
+    implementation 'org.postgresql:postgresql'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+//
+// Integration test config
+//
+sourceSets {
+    integrationTest {
+        java {
+            srcDir "src/integration/java"
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+        }
+        resources.srcDir file("src/integration/resources")
+    }
+}
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    integrationTestImplementation.extendsFrom implementation
+    integrationTestImplementation.extendsFrom testImplementation
+    integrationTestRuntime.extendsFrom testRuntime
+}
+generateIntegrationTestAvroJava {
+    def avroDir = sourceSets.integrationTest.resources.srcDir("/avro")
+    source(avroDir)
+}
+tasks.register('integrationTest', Test) {
+    group 'Test'
+    description 'Run the integration test suite using Spring Boot to test Kafka Connect and the Database end to end using the docker compose plugin to bring the stack up and down.'
+    useJUnitPlatform()
+    mustRunAfter test
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+dockerCompose {
+    intTest {
+        projectNamePrefix = 'kafka-connect-stack'
+
+        // isRequiredBy hooks 'dependsOn composeUp' and 'finalizedBy composeDown'
+        // and exposes environment variables and system properties (if possible)
+        isRequiredBy(integrationTest)
+
+        captureContainersOutputToFiles = project.getLayout().getBuildDirectory().dir("container-logs")
+    }
+}
+intTestComposeBuild.dependsOn(':connect-smt-lib:jar')
+intTestComposeBuild.mustRunAfter test
+
+tasks.register('integrationTestRun', Test) {
+    var runDeps = [test, intTestComposeUp]
+    dependsOn runDeps
+    mustRunAfter runDeps
+
+    group 'Test'
+    description 'Run the integration test suite, ensuring the docker compose stack is up before running the tests (the docker compose plugin will NOT bring the stack down after running the tests).'
+    useJUnitPlatform()
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+//
+// Spring Boot tasks
+//
+bootJar {
+    mainClass = 'com.bevans.kafka.connect.springBoot.FFVIIUpdateKafkaApplication'
+    archiveClassifier = 'BOOT'
+}
+springBoot {
+    buildInfo {
+        excludes = ['time']
+    }
+}
+
+
+//
+// Jacoco build config
+//
+test {
+    finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+    }
+}
+jacocoTestCoverageVerification {
+    violationRules {
+        failOnViolation = false
+
+        rule {
+            limit {
+                counter = 'LINE'
+                minimum = 0.9
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.8
+            }
+        }
+    }
+}
+tasks.register('jacocoIntegrationTestReport', JacocoReport) {
+    dependsOn integrationTest
+
+    group 'Verification'
+    description 'Generates code coverage report for the integrationTest task.'
+
+    executionData integrationTest
+    sourceSets sourceSets.main
+    reports {
+        xml.required = true
+    }
+}
+integrationTest.finalizedBy jacocoIntegrationTestReport
+tasks.register('jacocoIntegrationTestCoverageVerification', JacocoCoverageVerification) {
+    dependsOn integrationTest
+
+    group 'Verification'
+    description 'Verifies code coverage metrics based on specified rules for the integrationTest task.'
+
+    executionData integrationTest
+    sourceSets sourceSets.main
+
+    violationRules {
+        failOnViolation = false
+        rule {
+            limit {
+                counter = 'LINE'
+                minimum = 0.9
+            }
+            limit {
+                counter = 'BRANCH'
+                minimum = 0.8
+            }
+        }
+    }
+}
+
+
+//
+// enhance check task to verify jacoco rules have been met
+//
+tasks.named('check') {
+    dependsOn jacocoTestCoverageVerification, jacocoIntegrationTestCoverageVerification
+}

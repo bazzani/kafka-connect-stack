@@ -6,3 +6,4 @@ plugins {
 rootProject.name = 'kafka-connect-stack'
 
 include('connect-smt-lib')
+include('connect-spring-boot-app')

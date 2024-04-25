@@ -93,7 +93,7 @@ services:
     depends_on:
       - broker
       - schema-registry
-      - connect
+#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
       - ksqldb-server
     ports:
       - "9021:9021"
@@ -114,7 +114,7 @@ services:
     hostname: ksqldb-server
     depends_on:
       - broker
-      - connect
+#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
     ports:
       - "8088:8088"
     environment:
@@ -135,7 +135,7 @@ services:
     image: confluentinc/cp-ksqldb-cli:7.6.0
     depends_on:
       - broker
-      - connect
+#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
       - ksqldb-server
     entrypoint: /bin/sh
     tty: true
@@ -147,7 +147,7 @@ services:
       - ksqldb-server
       - broker
       - schema-registry
-      - connect
+#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
                        cub kafka-ready -b broker:29092 1 40 && \
                        echo Waiting for Confluent Schema Registry to be ready... && \
