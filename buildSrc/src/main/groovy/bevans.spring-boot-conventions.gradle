@@ -1,0 +1,6 @@
+repositories {
+    maven {
+        name "confluent"
+        url "https://packages.confluent.io/maven/"
+    }
+}

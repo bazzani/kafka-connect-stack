@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/connect-smt-lib" />
             <option value="$PROJECT_DIR$/connect-spring-boot-app" />
+            <option value="$PROJECT_DIR$/jacoco-report-aggregation" />
           </set>
         </option>
       </GradleProjectSettings>
