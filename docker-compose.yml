@@ -195,4 +195,4 @@ services:
       POSTGRES_PASSWORD: kafka_connect_password
       POSTGRES_DB: kafka_connect
     volumes:
-      - ./db/init-db_final-fantasy-vii.sql:/docker-entrypoint-initdb.d/init-db_final-fantasy-vii.sql
+      - ./db/:/docker-entrypoint-initdb.d/
