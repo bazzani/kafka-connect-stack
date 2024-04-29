@@ -23,7 +23,6 @@ USER appuser
 
 COPY connect-scripts /connect-scripts
 COPY connector-configs /connector-configs
-COPY ./build/libs/*SMT.jar /usr/share/java/kafka
-# build with the command `docker build -t bevans/kafka-connect .`
+COPY ./connect-smt-lib/build/libs/connect-smt-lib-*.jar /usr/share/java/kafka
 
 ENTRYPOINT ["sh","/connect-scripts/connect-entrypoint.sh"]
