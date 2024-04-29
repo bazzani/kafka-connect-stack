@@ -5,17 +5,16 @@ plugins {
     id 'org.sonarqube' version '4.4.1.3373'
 }
 
-final def CONNECT_VERSION = '3.5.0'
+ext {
+    connectVersion = '3.7.0'
+    jsonVersion = '20240303'
+}
 
 dependencies {
-    implementation 'org.json:json:20240303'
-    implementation("org.apache.kafka:connect-api:$CONNECT_VERSION")
-    compileOnly("org.apache.kafka:connect-transforms:$CONNECT_VERSION")
+    api("org.apache.kafka:connect-api:${connectVersion}")
 
-    //
-    // Unit test dependencies
-    //
-    testImplementation("org.apache.kafka:connect-transforms:$CONNECT_VERSION")
+    implementation("org.apache.kafka:connect-transforms:${connectVersion}")
+    implementation("org.json:json:${jsonVersion}")
 }
 
 test {
@@ -53,6 +52,6 @@ sonar {
     }
 }
 
-tasks.named('check'){
+tasks.named('check') {
     dependsOn jacocoTestCoverageVerification
 }
