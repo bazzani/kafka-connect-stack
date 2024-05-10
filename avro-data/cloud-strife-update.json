@@ -4,13 +4,13 @@
   "exp": 32000,
   "hp": 5999,
   "mp": 128,
-  "win_loss_ratio": 12.12345,
-  "ps_store_cost": 123.1234567,
-  "name_in_bytes": null,
+  "winLossRatio": 12.12345,
+  "psStoreCost": 123.1234567,
+  "nameInBytes": null,
   "weapon": {
     "name": "Buster Sword",
     "attack": 33,
-    "magic_attack": 44
+    "magicAttack": 44
   },
   "materia": [
     "Fire",
