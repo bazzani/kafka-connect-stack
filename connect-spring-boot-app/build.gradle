@@ -1,12 +1,19 @@
 plugins {
     id 'bevans.java-conventions'
 
-    id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
+    id 'org.springframework.boot' version '3.2.4'
+    id 'io.spring.dependency-management' version '1.1.4'
 
     id 'io.freefair.lombok' version '8.6'
     id 'com.avast.gradle.docker-compose' version '0.17.6'
     id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
+}
+
+repositories {
+    maven {
+        name "confluent"
+        url "https://packages.confluent.io/maven/"
+    }
 }
 
 dependencies {

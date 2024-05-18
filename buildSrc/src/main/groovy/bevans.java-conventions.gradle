@@ -8,10 +8,6 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    maven {
-        name "confluent"
-        url "https://packages.confluent.io/maven/"
-    }
 }
 
 dependencies {
