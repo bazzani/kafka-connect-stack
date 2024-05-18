@@ -36,7 +36,7 @@ reporting {
 }
 
 tasks.named('check') {
-    dependsOn fullCodeCoverageReport
+    dependsOn jacocoFullReport
 }
 
 // Disabled Tasks from java/boot plugins
