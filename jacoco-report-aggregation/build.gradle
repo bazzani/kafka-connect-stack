@@ -1,0 +1,54 @@
+plugins {
+    id 'bevans.java-conventions'
+    id 'bevans.spring-boot-conventions'
+
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+
+    id 'jacoco-report-aggregation'
+}
+
+dependencies {
+    jacocoAggregation project(':connect-smt-lib')
+    jacocoAggregation project(':connect-spring-boot-app')
+}
+
+reporting {
+    reports {
+        jacocoFullReport(JacocoCoverageReport) {
+            testType = 'full'
+        }
+    }
+
+    jacocoFullReport {
+        description = 'Build a full coverage report based on jacoco execution data from all sub projects.'
+
+        reports {
+            xml.required = true;
+        }
+
+        dependsOn(':connect-smt-lib:jacocoTestReport')
+        dependsOn(':connect-spring-boot-app:jacocoTestReport')
+        dependsOn(':connect-spring-boot-app:jacocoIntegrationTestReport')
+
+        executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    }
+}
+
+tasks.named('check') {
+    dependsOn fullCodeCoverageReport
+}
+
+// Disabled Tasks from java/boot plugins
+test {
+    enabled = false
+}
+jar {
+    enabled = false
+}
+resolveMainClassName {
+    enabled = false
+}
+bootJar {
+    enabled = false
+}

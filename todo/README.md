@@ -32,5 +32,5 @@ This project has still got some work TODO:
 
 13. [ ] Review usage of `GenericData.Record`, is this the best class to use?
     
-14. [ ] Apply Jacoco aggregation plugin to get all jacoco coverage data in one report
+14. [x] Apply Jacoco aggregation plugin to get all jacoco coverage data in one report
     - https://docs.gradle.org/current/userguide/jacoco_report_aggregation_plugin.html#jacoco_report_aggregation_plugin
