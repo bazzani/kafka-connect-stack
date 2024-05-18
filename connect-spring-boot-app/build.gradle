@@ -94,12 +94,8 @@ tasks.register('integrationTestRun', Test) {
 
 
 //
-// Spring Boot tasks
+// Spring Boot config
 //
-bootJar {
-    mainClass = 'com.bevans.kafka.connect.springBoot.FFVIIUpdateKafkaApplication'
-    archiveClassifier = 'BOOT'
-}
 springBoot {
     buildInfo {
         excludes = ['time']
