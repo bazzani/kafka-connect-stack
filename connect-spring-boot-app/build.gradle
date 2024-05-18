@@ -122,11 +122,11 @@ jacocoTestCoverageVerification {
         rule {
             limit {
                 counter = 'LINE'
-                minimum = 0.9
+                minimum = project.jacocoMinLine;
             }
             limit {
                 counter = 'BRANCH'
-                minimum = 0.8
+                minimum = project.jacocoMinBranch;
             }
         }
     }
@@ -154,15 +154,16 @@ tasks.register('jacocoIntegrationTestCoverageVerification', JacocoCoverageVerifi
     sourceSets sourceSets.main
 
     violationRules {
-        failOnViolation = false
+        failOnViolation = true
+
         rule {
             limit {
                 counter = 'LINE'
-                minimum = 0.9
+                minimum = project.jacocoMinLine;
             }
             limit {
                 counter = 'BRANCH'
-                minimum = 0.8
+                minimum = project.jacocoMinBranch;
             }
         }
     }

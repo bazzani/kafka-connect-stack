@@ -19,14 +19,18 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
 class FFVIIAllyUpdateTest {
-    @Autowired
-    private KafkaProducer kafkaProducer;
+    private final KafkaProducer kafkaProducer;
+    private final FFVIIAllyUpdateRepository ffviiAllyUpdateRepository;
+    private final FFVIIAllyUpdateCreator ffviiAllyUpdateCreator;
 
     @Autowired
-    private FFVIIAllyUpdateRepository ffviiAllyUpdateRepository;
-
-    @Autowired
-    private FFVIIAllyUpdateCreator ffviiAllyUpdateCreator;
+    public FFVIIAllyUpdateTest(KafkaProducer kafkaProducer,
+                               FFVIIAllyUpdateRepository ffviiAllyUpdateRepository,
+                               FFVIIAllyUpdateCreator ffviiAllyUpdateCreator) {
+        this.kafkaProducer = kafkaProducer;
+        this.ffviiAllyUpdateRepository = ffviiAllyUpdateRepository;
+        this.ffviiAllyUpdateCreator = ffviiAllyUpdateCreator;
+    }
 
     @Test
     void shouldSendAllyUpdateAndFindInDatabase() {
