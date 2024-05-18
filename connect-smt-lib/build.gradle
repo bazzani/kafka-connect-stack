@@ -31,11 +31,11 @@ jacocoTestCoverageVerification {
         rule {
             limit {
                 counter = 'LINE'
-                minimum = 0.9
+                minimum = project.jacocoMinLine;
             }
             limit {
                 counter = 'BRANCH'
-                minimum = 0.8
+                minimum = project.jacocoMinBranch;
             }
         }
     }
