@@ -58,8 +58,10 @@ generateIntegrationTestAvroJava {
 tasks.register('integrationTest', Test) {
     group 'Test'
     description 'Run the integration test suite using Spring Boot to test Kafka Connect and the Database end to end using the docker compose plugin to bring the stack up and down.'
+
     useJUnitPlatform()
     mustRunAfter test
+
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
 }
@@ -89,6 +91,7 @@ tasks.register('integrationTestRun', Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
 }
+
 
 //
 // Spring Boot tasks
