@@ -57,7 +57,6 @@ tasks.register('integrationTest', Test) {
     group 'Test'
     description 'Run the integration test suite using Spring Boot to test Kafka Connect and the Database end to end using the docker compose plugin to bring the stack up and down.'
 
-    useJUnitPlatform()
     mustRunAfter test
 
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
@@ -78,13 +77,12 @@ intTestComposeBuild.dependsOn(':connect-smt-lib:jar')
 intTestComposeBuild.mustRunAfter test
 
 tasks.register('integrationTestRun', Test) {
+    group 'Test'
+    description 'Run the integration test suite, ensuring the docker compose stack is up before running the tests (the docker compose plugin will NOT bring the stack down after running the tests).'
+
     var runDeps = [test, intTestComposeUp]
     dependsOn runDeps
     mustRunAfter runDeps
-
-    group 'Test'
-    description 'Run the integration test suite, ensuring the docker compose stack is up before running the tests (the docker compose plugin will NOT bring the stack down after running the tests).'
-    useJUnitPlatform()
 
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
