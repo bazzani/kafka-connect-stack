@@ -6,7 +6,8 @@ If you want to learn how to run Kafka Connect, test a Connector is working end t
 automated tests asserting on data in the Database, then this project is for you; read on... :point_down:
 
 > [!NOTE]
-> _Run `./gradlew build` to build the project, afterward you can check the code coverage and container logs_
+> _Run `./gradlew build` to build the project including running the integration tests.
+> Afterward you can check the code coverage and container logs_
 
 ---
 
@@ -46,13 +47,16 @@ The code in this project is split into a few Gradle Multi-Projects with dependen
 the [Gradle User Manual](https://docs.gradle.org/current/userguide/about_manual.html) have been
 followed:
 
-| Project                                                  | Description                                                                                                                                                                                                  |
-|----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Root project` <img width="330"/>                        | Contains Java Toolchain plugin in `settings.gradle`, and plugin definitions in `build.gradle` which are applied to subprojects (_this centralises the version numbers_).                                     |`
-| [`buildSrc`](buildSrc)                                   | Creates some [Gradle convention plugins](https://docs.gradle.org/current/userguide/sharing_build_logic_between_subprojects.html#sec:convention_plugins) to share build logic common to sub projects.         |
-| [`connect-smt-lib`](connect-smt-lib)                     | Contains Java code and tests for [custom SMTs](https://docs.confluent.io/platform/current/connect/transforms/custom.html) that are exported to a jar library and added to the Connect Docker image.          |
-| [`connect-spring-boot-app`](connect-spring-boot-app)     | Contains Java code which uses Spring Boot, Spring Kafka, Spring Data JPA, and `@SpringBootTest` to run end to end integration tests with the help of some Grade plugins to control the Docker Compose stack. |
-| [`jacoco-report-aggregation`](jacoco-report-aggregation) | Contains Gradle build logic to run a plugin which aggregates all JaCoCo execution data and creates a consolidated html/xml report with coverage data for all subprojects.                                    |
+| Project                                                  | Description                                                                                                                                                                                                                                                                                               |
+|----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Root project` &nbsp; <img width="330"/>                 | Contains Java Toolchain plugin in `settings.gradle`, and plugin definitions in `build.gradle` which are applied to subprojects (_this centralises the version numbers_).                                                                                                                                  |`
+| [`buildSrc`](buildSrc)                                   | Creates some [Gradle convention plugins](https://docs.gradle.org/current/userguide/sharing_build_logic_between_subprojects.html#sec:convention_plugins) to share build logic common to sub projects.                                                                                                      |
+| [`connect-smt-lib`](connect-smt-lib)                     | Contains Java code and tests for [custom SMTs](https://docs.confluent.io/platform/current/connect/transforms/custom.html) that are exported to a jar library and added to the Connect Docker image.                                                                                                       |
+| [`connect-spring-boot-app`](connect-spring-boot-app)     | Contains Java code which uses Spring Boot, Spring Kafka, Spring Data JPA, and `@SpringBootTest` to run end to end integration tests with the help of some Grade plugins to control the Docker Compose stack.                                                                                              |
+| [`jacoco-report-aggregation`](jacoco-report-aggregation) | Contains Gradle build logic to run a plugin which aggregates all JaCoCo execution data and creates a consolidated html/xml report with coverage data for all subprojects.                                                                                                                                 |
+|                                                          |                                                                                                                                                                                                                                                                                                           |
+| [_connect-connector-configs_](connect-connector-configs) | Contains Kafka Connect connector configurations in json format.  Each json file is processed to create connectors automatically after the Connect service has started and ready to receive requests via the [REST API](https://docs.confluent.io/platform/7.6/connect/references/restapi.html#connectors) |
+| [_connect-scripts_](connect-scripts)                     | Contains custom bash scripts to start the Connect service with the Confluent startup script, waiting for the REST API to be available, then creates connector automatically.                                                                                                                              |
 
 ---
 
