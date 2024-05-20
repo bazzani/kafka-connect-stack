@@ -5,7 +5,8 @@
 If you want to learn how to run Kafka Connect, test a Connector is working end to end in your local environment, with
 automated tests asserting on data in the Database, then this project is for you; read on... :point_down:
 
-:bulb: _Run `./gradlew build` to build the project, afterward you can check the code coverage and container logs_
+> [!NOTE]
+> _Run `./gradlew build` to build the project, afterward you can check the code coverage and container logs_
 
 ---
 
@@ -47,7 +48,7 @@ followed:
 
 | Project                                                  | Description                                                                                                                                                                                                  |
 |----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Root project` <img width=310/>                          | Contains Java Toolchain plugin in `settings.gradle`, and plugin definitions in `build.gradle` which are applied to subprojects (_this centralises the version numbers_).                                     |`
+| `Root project` &nbsp; <img width=310/> &nbsp;            | Contains Java Toolchain plugin in `settings.gradle`, and plugin definitions in `build.gradle` which are applied to subprojects (_this centralises the version numbers_).                                     |`
 | [`buildSrc`](buildSrc)                                   | Creates some [Gradle convention plugins](https://docs.gradle.org/current/userguide/sharing_build_logic_between_subprojects.html#sec:convention_plugins) to share build logic common to sub projects.         |
 | [`connect-smt-lib`](connect-smt-lib)                     | Contains Java code and tests for [custom SMTs](https://docs.confluent.io/platform/current/connect/transforms/custom.html) that are exported to a jar library and added to the Connect Docker image.          |
 | [`connect-spring-boot-app`](connect-spring-boot-app)     | Contains Java code which uses Spring Boot, Spring Kafka, Spring Data JPA, and `@SpringBootTest` to run end to end integration tests with the help of some Grade plugins to control the Docker Compose stack. |
@@ -71,7 +72,7 @@ followed:
 > [!CAUTION]
 > _Please ensure you have Java 17 set as your **Java Home**, otherwise you will get errors like this:_
 
-```console
+```
 FAILURE: Build failed with an exception.
 
 * What went wrong:
@@ -100,7 +101,8 @@ A problem occurred configuring root project 'kafka-connect-stack'.
 The Docker Compose stack used in this project is based off the Confluent stack found
 at https://github.com/confluentinc/cp-all-in-one/tree/7.3.0-post/cp-all-in-one
 
-:bulb: You can start the stack by running this command
+> [!TIP]
+> You can start the stack by running this command
 
 ```shell
 docker compose up -d --build
@@ -119,7 +121,7 @@ To connect to services in Docker, refer to the following ports:
 | ZooKeeper                 | 2181                          |                                                                                                                |
 | Kafka broker              | 9092                          |                                                                                                                |
 | Kafka broker JMX          | 9101                          |                                                                                                                |
-| Confluent Schema Registry | [8081](http://localhost:8081) | [Schema Registry API Reference](https://docs.confluent.io/platform/7.6/schema-registry/develop/api.html)       
+| Confluent Schema Registry | [8081](http://localhost:8081) | [Schema Registry API Reference](https://docs.confluent.io/platform/7.6/schema-registry/develop/api.html)       |
 | Kafka Connect             | [8083](http://localhost:8083) | [Kafka Connect Rest API documentation](https://docs.confluent.io/platform/7.6/connect/references/restapi.html) |
 | Confluent Control Center  | [9021](http://localhost:9021) | [Confluent Control Center documentation](https://docs.confluent.io/platform/7.6/control-center/index.html)     |
 | ksqlDB                    | 8088                          |                                                                                                                |
@@ -158,27 +160,25 @@ when a connector tried to process a record and failed.
 
 #### Running Integration tests once
 
-It is possible to run the integration tests without bringing the
-Docker Compose stack down (and the containers being removed). This is
-useful if you are making changes to the tests, the underlying Spring
-Boot application, or even the SMTs in the `connect-smt-lib` library
-(_making changes to the latter will force the `connect` container to be
-recreated, which is desirable_).
+An `integrationTest` sourceSet has been added so that we can separate the unit tests and the integration tests, the
+former running in a much shorter time by running the standard `./gradlew test` task.
+
+It is possible to run the integration tests without bringing the Docker Compose stack down (and the containers being
+removed). This is useful if you are making changes to the tests, the underlying Spring Boot application, or even the
+SMTs in the `connect-smt-lib` library (_making changes to the latter will force the `connect` container to be recreated,
+which is desirable_).
 
 - To do this run `./gradlew integrationTestRun`
 
-:bulb: Exclude the `intTestComposeUp` task to run the integration tests even faster by not checking if all containers
-are responding on the correct port before the tests are run. Doing this check can be unnecessary if we are only making
-changes to the tests, and not the SMTs or Connect container.
+> [!TIP]
+> Exclude the `intTestComposeUp` task to run the integration tests even faster by not checking if all containers are
+> responding on the correct port before the tests are run. Doing this check can be unnecessary if we are only making
+> changes to the tests, and not the SMTs or Connect container.
+> - To do this run `./gradlew integrationTestRun -x intTestComposeUp`
 
-- To do this run `./gradlew integrationTestRun -x intTestComposeUp`
-
-An `integrationTest` sourceSet has been added so that we can separate
-the unit tests and the integration tests, the former running in a much
-shorter time by running the standard `./gradlew test` task.
-
-:bulb: _making changes to any SMT library code or connector configs will recreate the Connect docker image via
-the `:connect-spring-boot-app:intTestComposeBuild` task, which is a dependant of `integrationTestRun`_.
+> [!NOTE]
+> _making changes to any SMT library code or connector configs will recreate the Connect docker image via
+> the `:connect-spring-boot-app:intTestComposeBuild` task, which is a dependant of `integrationTestRun`_.
 
 ---
 
