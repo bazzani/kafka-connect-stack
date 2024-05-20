@@ -26,7 +26,7 @@ This project has still got some work TODO:
 
 10. [x] Use a multi-project gradle setup, one for SMTs, one for Spring Boot app(s) - https://docs.gradle.org/current/userguide/multi_project_builds.html
     
-11. [ ] Add jvm debug settings to `connect` container/service and info in README -- `-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005`
+11. [x] Add jvm debug settings to `connect` container/service and info in README -- `-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005`
 
 12. [x] Add gradle build command to docker compose to ensure the SMT jar is available?
 
