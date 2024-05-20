@@ -5,7 +5,7 @@ log_message() {
   echo "[$current_datetime]" "$1"
 }
 
-config_files_dir=/connector-configs
+config_files_dir=/connect-connector-configs
 config_files=$(ls $config_files_dir)
 
 log_message "Connect Startup: Creating connectors from config files at '$config_files_dir'..."

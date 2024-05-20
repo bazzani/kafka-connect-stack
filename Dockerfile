@@ -22,7 +22,7 @@ RUN yum install jq -y
 USER appuser
 
 COPY connect-scripts /connect-scripts
-COPY connector-configs /connector-configs
+COPY connect-connector-configs /connect-connector-configs
 COPY ./connect-smt-lib/build/libs/connect-smt-lib-*.jar /usr/share/java/kafka
 
 ENTRYPOINT ["sh","/connect-scripts/connect-entrypoint.sh"]
