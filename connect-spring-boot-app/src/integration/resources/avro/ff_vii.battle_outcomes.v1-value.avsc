@@ -1,0 +1,26 @@
+{
+  "type": "record",
+  "name": "FFViiBattleOutcome",
+  "namespace": "com.bevans.avro.ffvii",
+  "fields": [
+    {
+      "name": "winOrLoss",
+      "type": "boolean"
+    },
+    {
+      "name": "allies",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "expEarned",
+      "type": "int"
+    },
+    {
+      "name": "apEarned",
+      "type": "int"
+    }
+  ]
+}

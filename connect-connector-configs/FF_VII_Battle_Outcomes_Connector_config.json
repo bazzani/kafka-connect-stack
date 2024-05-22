@@ -1,0 +1,26 @@
+{
+  "name": "FF_VII_Battle_Outcomes_Connector",
+  "config": {
+    "name": "FF_VII_Battle_Outcomes_Connector",
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "topics": "ff_vii.battle_outcomes.v1",
+    "errors.deadletterqueue.topic.name": "ff_vii.battle_outcomes.v1.DLT",
+    "errors.deadletterqueue.topic.replication.factor": "1",
+    "connection.url": "jdbc:postgresql://postgres:5432/kafka_connect",
+    "connection.user": "kafka_connect_user",
+    "connection.password": "kafka_connect_password",
+    "table.name.format": "final_fantasy_vii_battle_outcome",
+    "pk.mode": "record_value",
+    "pk.fields": "battle_complete_time",
+    "auto.create": "false",
+    "auto.evolve": "false",
+    "transforms": "insertNowTimestamp,alliesJsonStringArray,renameFields",
+    "transforms.insertNowTimestamp.type": "com.bevans.kafka.connect.transforms.InsertNowFieldTransform",
+    "transforms.insertNowTimestamp.field": "battleCompleteTime",
+    "transforms.alliesJsonStringArray.type": "com.bevans.kafka.connect.transforms.ArrayToJsonTransform",
+    "transforms.alliesJsonStringArray.arrayField": "allies",
+    "transforms.renameFields.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "transforms.renameFields.renames": "battleCompleteTime:battle_complete_time,winOrLoss:win_or_loss,allies:allies,expEarned:exp_earned,apEarned:ap_earned",
+    "fields.whitelist": "battle_complete_time,win_or_loss,allies,exp_earned,ap_earned"
+  }
+}
