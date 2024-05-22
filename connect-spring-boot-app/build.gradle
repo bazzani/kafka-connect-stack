@@ -61,6 +61,10 @@ tasks.register('integrationTest', Test) {
 
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
+
+    doFirst {
+        sleep(10_000)
+    }
 }
 dockerCompose {
     intTest {

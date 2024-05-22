@@ -17,10 +17,10 @@ for config_file in $config_files; do
   log_message "Creating connector from config file: $connector_name :: $config_file"
 
   curl -s -X DELETE -H "Content-Type:application/json" http://localhost:8083/connectors/"${connector_name}"
-  sleep 5
+  sleep 2
 
   curl -s -X PUT -H "Content-Type:application/json" http://localhost:8083/connectors/"${connector_name}"/config \
     -d "$connector_config"
   log_message
-  sleep 10
+  sleep 2
 done
