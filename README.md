@@ -1,13 +1,33 @@
 # Kafka Connect Stack with Integration Tests
 
+<!-- TOC -->
+* [Kafka Connect Stack with Integration Tests](#kafka-connect-stack-with-integration-tests)
+  * [TL;DR](#tldr)
+  * [Project purpose](#project-purpose)
+  * [Project structure](#project-structure)
+  * [How do I extend this project?](#how-do-i-extend-this-project)
+  * [Technologies Used](#technologies-used)
+  * [Docker Compose stack](#docker-compose-stack)
+      * [Ports](#ports)
+  * [Running Integration Tests](#running-integration-tests)
+      * [Container logs](#container-logs)
+      * [Running Integration tests once](#running-integration-tests-once)
+  * [JaCoCo coverage](#jacoco-coverage)
+  * [TODOs](#todos)
+<!-- TOC -->
+
 ## TL;DR
 
 If you want to learn how to run Kafka Connect, test a Connector is working end to end in your local environment, with
 automated tests asserting on data in the Database, then this project is for you; read on... :point_down:
 
-> [!NOTE]
+> [!TIP]
 > _Run `./gradlew build` to build the project including running the integration tests.
 > Afterward you can check the code coverage and container logs_
+
+> [!NOTE]
+> The Docker Compose stack used in this project is based off the Confluent stack found
+> at https://github.com/confluentinc/cp-all-in-one/tree/7.3.0-post/cp-all-in-one
 
 ---
 
@@ -57,6 +77,37 @@ followed:
 |                                                          |                                                                                                                                                                                                                                                                                                           |
 | [_connect-connector-configs_](connect-connector-configs) | Contains Kafka Connect connector configurations in json format.  Each json file is processed to create connectors automatically after the Connect service has started and ready to receive requests via the [REST API](https://docs.confluent.io/platform/7.6/connect/references/restapi.html#connectors) |
 | [_connect-scripts_](connect-scripts)                     | Contains custom bash scripts to start the Connect service with the Confluent startup script, waiting for the REST API to be available, then creates connector automatically.                                                                                                                              |
+
+---
+
+## How do I extend this project?
+
+The objective of this project is to allow you to easily add your own SMTs and use them in Connectors.
+
+If you want to do this try the following steps:
+
+1. Add a new SMT to the [connect-smt-lib](connect-smt-lib/src/main/java/com/bevans/kafka/connect/transforms) module
+    - _don't forget to add a unit test too!_
+2. Add a new connector config to the [connect-connector-configs](connect-connector-configs) directory
+    - It will automatically get detected at container startup and the connector will be created
+    - :bulb: Keep an eye on the container logs at startup to ensure your connector config is valid
+    - :bulb: Or use the Confluent Control Center UI to add a connector by uploading the json file
+3. Add a AVRO schema for the new record/topic [here](connect-spring-boot-app/src/integration/resources/avro)
+4. Add a AVRO json data file for the new
+   record/topic [here](connect-spring-boot-app/src/integration/resources/avro-data)
+5. If you are adding a new `JDBCSinkConnector`
+    1. Add a new Database table definition to the [db](db) directory
+    2. Add a new Entity for the new DB
+       Table [here](connect-spring-boot-app/src/main/java/com/bevans/kafka/connect/springboot/data/entity)
+    3. Add a new JPA Repository for the
+       entity [here](connect-spring-boot-app/src/main/java/com/bevans/kafka/connect/springboot/data)
+7. Add a new Creator class to map AVRO data to a `GenericData.Record` based
+   on [FFVIIAllyUpdateCreator](connect-spring-boot-app/src/integration/java/com/bevans/kafka/connect/springboot/ffvii/FFVIIAllyUpdateCreator.java)
+8. Add a `@SpringBoot` integration test for the new connector to
+   the [connect-spring-boot-app](connect-spring-boot-app/src/integration/java/com/bevans/kafka/connect/springboot)
+   module based
+   on [FFVIIAllyUpdateTest](connect-spring-boot-app/src/integration/java/com/bevans/kafka/connect/springboot/FFVIIAllyUpdateTest.java)
+9. Run the integration tests `./gradlew integrationTest`
 
 ---
 
