@@ -2,6 +2,7 @@
 
 <!-- TOC -->
 * [Kafka Connect Stack with Integration Tests](#kafka-connect-stack-with-integration-tests)
+* [Build Status](#build-status)
   * [TL;DR](#tldr)
   * [Project purpose](#project-purpose)
   * [Project structure](#project-structure)
@@ -15,6 +16,10 @@
   * [JaCoCo coverage](#jacoco-coverage)
   * [TODOs](#todos)
 <!-- TOC -->
+
+# Build Status
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/bazzani/kafka-connect-stack/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/bazzani/kafka-connect-stack/tree/develop)
 
 ## TL;DR
 
