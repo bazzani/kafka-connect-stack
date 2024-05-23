@@ -2,7 +2,9 @@
 
 <!-- TOC -->
 * [Kafka Connect Stack with Integration Tests](#kafka-connect-stack-with-integration-tests)
-* [Build Status](#build-status)
+  * [Continuous Integration with Circle CI](#continuous-integration-with-circle-ci)
+    * [Build Status](#build-status)
+    * [Build Features](#build-features)
   * [TL;DR](#tldr)
   * [Project purpose](#project-purpose)
   * [Project structure](#project-structure)
@@ -17,9 +19,23 @@
   * [TODOs](#todos)
 <!-- TOC -->
 
-# Build Status
+## Continuous Integration with Circle CI
+
+### Build Status
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/bazzani/kafka-connect-stack/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/bazzani/kafka-connect-stack/tree/develop)
+
+### Build Features
+
+The Gradle dependencies are cached based on a checksum of all the build.gradle files, which can speed up the builds
+significantly; see more at the [Caching dependencies](https://circleci.com/docs/caching) page.
+
+After the build has finished, the test results can be found in the `Tests` tab of the job; see more at
+the [Collect test data](https://circleci.com/docs/collect-test-data/#gradle-junit-test-results) page.
+
+The test html reports, JaCoCo aggregate report and connect container logs can be found in the `Artifacts` tab of the
+job. The log file can be useful to check if integration tests fail; see more at
+the [Storing build artifacts](https://circleci.com/docs/artifacts/) page.
 
 ## TL;DR
 
