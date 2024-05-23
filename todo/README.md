@@ -37,3 +37,5 @@ This project has still got some work TODO:
 
 15. [ ] Use env vars in connector creation scripts to replace ENV VAR placeholders in the json config (currently they
     are hard coded)
+    
+15. [ ] Use JaCoCo aggregate coverage/test result when running Sonar, currently it is using the SMT lib data
