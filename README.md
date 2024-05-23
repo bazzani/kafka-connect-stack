@@ -1,22 +1,24 @@
 # Kafka Connect Stack with Integration Tests
 
 <!-- TOC -->
+
 * [Kafka Connect Stack with Integration Tests](#kafka-connect-stack-with-integration-tests)
-  * [Continuous Integration with Circle CI](#continuous-integration-with-circle-ci)
-    * [Build Status](#build-status)
-    * [Build Features](#build-features)
-  * [TL;DR](#tldr)
-  * [Project purpose](#project-purpose)
-  * [Project structure](#project-structure)
-  * [How do I extend this project?](#how-do-i-extend-this-project)
-  * [Technologies Used](#technologies-used)
-  * [Docker Compose stack](#docker-compose-stack)
-      * [Ports](#ports)
-  * [Running Integration Tests](#running-integration-tests)
-      * [Container logs](#container-logs)
-      * [Running Integration tests once](#running-integration-tests-once)
-  * [JaCoCo coverage](#jacoco-coverage)
-  * [TODOs](#todos)
+    * [Continuous Integration with Circle CI](#continuous-integration-with-circle-ci)
+        * [Build Status](#build-status)
+        * [Build Features](#build-features)
+    * [TL;DR](#tldr)
+    * [Project purpose](#project-purpose)
+    * [Project structure](#project-structure)
+    * [How do I extend this project?](#how-do-i-extend-this-project)
+    * [Technologies Used](#technologies-used)
+    * [Docker Compose stack](#docker-compose-stack)
+        * [Ports](#ports)
+    * [Running Integration Tests](#running-integration-tests)
+        * [Container logs](#container-logs)
+        * [Running Integration tests once](#running-integration-tests-once)
+    * [JaCoCo coverage](#jacoco-coverage)
+    * [TODOs](#todos)
+
 <!-- TOC -->
 
 ## Continuous Integration with Circle CI
@@ -88,7 +90,7 @@ The code in this project is split into a few Gradle Multi-Projects with dependen
 the [Gradle User Manual](https://docs.gradle.org/current/userguide/about_manual.html) have been
 followed:
 
-| Project                                                  | Description                                                                                                                                                                                                                                                                                               |
+| Project Directory                                        | Description                                                                                                                                                                                                                                                                                               |
 |----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Root project` &nbsp; <img width="330"/>                 | Contains Java Toolchain plugin in `settings.gradle`, and plugin definitions in `build.gradle` which are applied to subprojects (_this centralises the version numbers_).                                                                                                                                  |`
 | [`buildSrc`](buildSrc)                                   | Creates some [Gradle convention plugins](https://docs.gradle.org/current/userguide/sharing_build_logic_between_subprojects.html#sec:convention_plugins) to share build logic common to sub projects.                                                                                                      |
@@ -97,7 +99,8 @@ followed:
 | [`jacoco-report-aggregation`](jacoco-report-aggregation) | Contains Gradle build logic to run a plugin which aggregates all JaCoCo execution data and creates a consolidated html/xml report with coverage data for all subprojects.                                                                                                                                 |
 |                                                          |                                                                                                                                                                                                                                                                                                           |
 | [_connect-connector-configs_](connect-connector-configs) | Contains Kafka Connect connector configurations in json format.  Each json file is processed to create connectors automatically after the Connect service has started and ready to receive requests via the [REST API](https://docs.confluent.io/platform/7.6/connect/references/restapi.html#connectors) |
-| [_connect-scripts_](connect-scripts)                     | Contains custom bash scripts to start the Connect service with the Confluent startup script, waiting for the REST API to be available, then creates connector automatically.                                                                                                                              |
+| [_connect-scripts_](connect-scripts)                     | Contains custom bash scripts to start the Connect service with the Confluent startup script, waiting for the REST API to be available, then creates connector automatically.                                                                                                                              |    
+| [_db_](db)                                               | Contains SQL scripts run by the postgres service on startup; we usually add `CREATE TABLE` definitions in these scripts.                                                                                                                                                                                  |
 
 ---
 
