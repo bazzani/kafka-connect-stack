@@ -34,3 +34,6 @@ This project has still got some work TODO:
     
 14. [x] Apply Jacoco aggregation plugin to get all jacoco coverage data in one report
     - https://docs.gradle.org/current/userguide/jacoco_report_aggregation_plugin.html#jacoco_report_aggregation_plugin
+
+15. [ ] Use env vars in connector creation scripts to replace ENV VAR placeholders in the json config (currently they
+    are hard coded)
