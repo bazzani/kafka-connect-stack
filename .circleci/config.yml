@@ -39,7 +39,7 @@ jobs:
 
       - run:
           name: Build with Gradle Wrapper
-          command: ./gradlew build
+          command: ./gradlew build --console=verbose
 
       - run:
           name: Save test results for the "Tests" tab
