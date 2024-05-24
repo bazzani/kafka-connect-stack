@@ -25,9 +25,9 @@ jobs:
       - restore_cache:
           name: Restore Gradle dependencies
           keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "connect-smt-lib/build.gradle" }}-{{ checksum "connect-spring-boot-app/build.gradle" }}
+            - v2-dependencies-{{ checksum "build.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "connect-smt-lib/build.gradle" }}-{{ checksum "connect-spring-boot-app/build.gradle" }}
             # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+            - v2-dependencies-
       - run:
           name: Resolve Gradle dependencies
           command: ./gradlew jacoco-report-aggregation:dependencies
@@ -35,7 +35,7 @@ jobs:
           name: Save Gradle dependencies
           paths:
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "connect-smt-lib/build.gradle" }}-{{ checksum "connect-spring-boot-app/build.gradle" }}
+          key: v2-dependencies-{{ checksum "build.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "connect-smt-lib/build.gradle" }}-{{ checksum "connect-spring-boot-app/build.gradle" }}
 
       - run:
           name: Build with Gradle Wrapper
