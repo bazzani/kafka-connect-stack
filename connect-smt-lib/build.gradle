@@ -1,7 +1,6 @@
 plugins {
     id 'bevans.java-conventions'
     id 'java-library'
-    id 'org.sonarqube' version '4.4.1.3373'
 }
 
 ext {
@@ -38,16 +37,6 @@ jacocoTestCoverageVerification {
                 minimum = project.jacocoMinBranch;
             }
         }
-    }
-}
-
-sonar {
-    properties {
-        property "sonar.projectKey", "bazzani_kafka-connect-stack"
-        property("sonar.organization", "bazzani-github")
-        property "sonar.host.url", "https://sonarcloud.io"
-        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
-        property("sonar.junit.reportPaths", "build/test-results/test")
     }
 }
 
