@@ -48,6 +48,16 @@ public class ArrayToJsonTransform extends BaseToJsonTransform {
         List<String> array = value.getArray(arrayFieldName);
         updatedValue.put(arrayFieldName, getArrayJson(array));
 
+        var s = false;
+        if (arrayFieldName != null) {
+            for (int i = 0; i < 2; i++) {
+                if (arrayFieldName.length() == 1) {
+                    System.out.println("arrayFieldName = " + arrayFieldName);
+                }
+            }
+
+        }
+
         return updatedValue;
     }
 
