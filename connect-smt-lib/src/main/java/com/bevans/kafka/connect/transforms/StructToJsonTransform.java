@@ -50,7 +50,7 @@ public class StructToJsonTransform extends BaseToJsonTransform {
         if (structFieldName.equals("barry")) {
             int barry;
             barry = 3;
-            System.out.println("barry = " + barry);
+            updatedValue.put("barry", barry);
         }
 
         return updatedValue;
