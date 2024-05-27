@@ -48,6 +48,9 @@ public class StructToJsonTransform extends BaseToJsonTransform {
         updatedValue.put(fieldName(), getStructJson(struct));
 
         if (structFieldName.equals("barry")) {
+            int barry;
+            barry = 3;
+            System.out.println("barry = " + barry);
         }
 
         return updatedValue;
