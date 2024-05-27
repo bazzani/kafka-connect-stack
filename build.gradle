@@ -29,8 +29,8 @@ def getWorkingBranchName() {
     return workingBranch
 }
 
-//tasks.named('build') {
-//    if (System.getenv("SONAR_TOKEN") != null) {
-//        dependsOn tasks.named("sonar")
-//    }
-//}
+tasks.named('build') {
+    if (System.getenv("SONAR_TOKEN") != null) {
+        dependsOn tasks.named("sonar")
+    }
+}
