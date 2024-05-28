@@ -8,6 +8,7 @@ plugins {
     id 'io.freefair.lombok'
     id 'com.avast.gradle.docker-compose'
     id 'com.github.davidmc24.gradle.plugin.avro'
+    id 'org.sonarqube'
 }
 
 ext {
@@ -21,7 +22,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.kafka:spring-kafka'
 
-    implementation ("io.confluent:kafka-avro-serializer:${kafkaAvroVersion}")
+    implementation("io.confluent:kafka-avro-serializer:${kafkaAvroVersion}")
     implementation 'org.postgresql:postgresql'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -34,11 +35,11 @@ dependencies {
 sourceSets {
     integrationTest {
         java {
-            srcDir "src/integration/java"
+            srcDirs = ["src/integration/java"]
             compileClasspath += main.output + test.output
             runtimeClasspath += main.output + test.output
         }
-        resources.srcDir file("src/integration/resources")
+        resources.srcDirs = ["src/integration/resources"]
     }
 }
 configurations {
@@ -175,4 +176,20 @@ tasks.register('jacocoIntegrationTestCoverageVerification', JacocoCoverageVerifi
 //
 tasks.named('check') {
     dependsOn jacocoTestCoverageVerification, jacocoIntegrationTestCoverageVerification
+}
+
+
+sonar {
+    properties {
+        properties["sonar.tests"] += getIntegrationTestSrcDir()
+        properties["sonar.junit.reportPaths"] += getIntegrationTestResultsDir()
+    }
+}
+
+String getIntegrationTestSrcDir() {
+    return project.sourceSets.integrationTest.java.srcDirs[0].toString()
+}
+
+String getIntegrationTestResultsDir() {
+    return project.getLayout().getBuildDirectory().dir("test-results/integrationTest").get().toString()
 }
