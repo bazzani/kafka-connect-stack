@@ -15,18 +15,22 @@ sonar {
         property "sonar.projectKey", "bazzani_kafka-connect-stack"
         property("sonar.organization", "bazzani-github")
         property "sonar.host.url", "https://sonarcloud.io"
-        property("sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/jacoco-report-aggregation/build/reports/jacoco/jacocoFullReport/jacocoFullReport.xml")
         property("sonar.branch.name", getWorkingBranchName())
+        property("sonar.coverage.jacoco.xmlReportPaths", getJaCoCoXmlReportPath())
     }
 }
 
-def getWorkingBranchName() {
+String getWorkingBranchName() {
     def workingBranch = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     println "Working branch: " + workingBranch
 
-    println "jacocoXML: ${project.rootDir}/jacoco-report-aggregation/build/reports/jacoco/jacocoFullReport/jacocoFullReport.xml"
-
     return workingBranch
+}
+
+String getJaCoCoXmlReportPath() {
+    return this.project("jacoco-report-aggregation").layout.getBuildDirectory()
+            .file("reports/jacoco/jacocoFullReport/jacocoFullReport.xml").get()
+            .toString()
 }
 
 tasks.named('build') {
