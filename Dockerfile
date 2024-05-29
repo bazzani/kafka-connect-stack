@@ -23,7 +23,6 @@ USER appuser
 
 COPY connect-scripts /connect-scripts
 COPY connect-connector-configs /connect-connector-configs
-RUN mkdir -p /usr/share/java/bevans
 COPY ./connect-smt-lib/build/libs/connect-smt-lib-*.jar /usr/share/java/bevans
 
 ENTRYPOINT ["sh","/connect-scripts/connect-entrypoint.sh"]
