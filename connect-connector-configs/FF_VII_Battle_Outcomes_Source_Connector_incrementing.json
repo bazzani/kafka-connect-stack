@@ -1,0 +1,16 @@
+{
+  "name": "FF_VII_Battle_Outcomes_Source_Connector_incrementing",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "tasks.max": "1",
+    "connection.url": "jdbc:mysql://mysql:3306/final_fantasy_vii_db",
+    "connection.user": "root",
+    "connection.password": "admin",
+    "table.whitelist": "final_fantasy_vii_battle_outcome",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "validate.non.null": "true",
+    "poll.interval.ms": "5000",
+    "topic.prefix": "ffvii-source-data_incrementing__"
+  }
+}
