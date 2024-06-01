@@ -3,10 +3,11 @@
 # todo failure for CC to talk to connect https://github.com/confluentinc/cp-all-in-one/issues/94
 
 ---
-version: '2'
+
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.0
+    restart: on-failure:3
     hostname: zookeeper
     ports:
       - "2181:2181"
@@ -16,10 +17,10 @@ services:
 
   broker:
     image: confluentinc/cp-server:7.6.0
+    restart: on-failure:3
     hostname: broker
     depends_on:
       - zookeeper
-#    restart: unless-stopped
     ports:
       - "9092:9092"
       - "9101:9101"
@@ -45,6 +46,7 @@ services:
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.6.0
+    restart: on-failure:3
     hostname: schema-registry
     depends_on:
       - broker
@@ -59,6 +61,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: on-failure:3
     hostname: connect
     depends_on:
       - broker
@@ -91,6 +94,7 @@ services:
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000"
   control-center:
     image: confluentinc/cp-enterprise-control-center:7.6.0
+    restart: on-failure:3
     hostname: control-center
     depends_on:
       - broker
@@ -113,6 +117,7 @@ services:
 
   ksqldb-server:
     image: confluentinc/cp-ksqldb-server:7.6.0
+    restart: on-failure:3
     hostname: ksqldb-server
     depends_on:
       - broker
@@ -135,6 +140,7 @@ services:
 
   ksqldb-cli:
     image: confluentinc/cp-ksqldb-cli:7.6.0
+    restart: on-failure:3
     depends_on:
       - broker
 #      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
@@ -144,6 +150,7 @@ services:
 
   ksql-datagen:
     image: confluentinc/ksqldb-examples:7.6.0
+    restart: on-failure:3
     hostname: ksql-datagen
     depends_on:
       - ksqldb-server
@@ -165,6 +172,7 @@ services:
 
   rest-proxy:
     image: confluentinc/cp-kafka-rest:7.6.0
+    restart: on-failure:3
     depends_on:
       - broker
       - schema-registry
@@ -179,7 +187,7 @@ services:
 
   postgres:
     image: postgres:16-alpine
-    restart: unless-stopped
+    restart: on-failure:3
     ports:
       - "5432:5432"
     environment:
