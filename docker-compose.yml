@@ -67,6 +67,7 @@ services:
       - broker
       - schema-registry
       - postgres
+      - mongo
     ports:
       - "8083:8083"
       - "8000:8000"
@@ -196,3 +197,24 @@ services:
       POSTGRES_DB: kafka_connect
     volumes:
       - ./db/:/docker-entrypoint-initdb.d/
+
+  mongo:
+    image: mongo
+    restart: on-failure:3
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: admin
+#  mongoexpress:
+#    image: mongo-express
+#    restart: always
+#    ports:
+#      - "8881:8081"
+#    depends_on:
+#      - mongo
+#    environment:
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+#      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+#      ME_CONFIG_BASICAUTH: false

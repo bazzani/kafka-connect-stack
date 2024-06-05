@@ -1,0 +1,10 @@
+{
+  "name": "FF_VII_Ally_Updates_MongoDB_Sink_Connector",
+  "config": {
+    "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+    "connection.uri": "mongodb://root:admin@mongo:27017",
+    "database": "final_fantasy_vii_db",
+    "collection": "final_fantasy_vii_ally_update",
+    "topics": "ff_vii.ally_updates.v1"
+  }
+}

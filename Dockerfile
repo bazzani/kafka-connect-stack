@@ -15,7 +15,8 @@ USER appuser
 ###########################
 
 RUN confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:10.7.6 && \
-    confluent-hub install --no-prompt confluentinc/kafka-connect-datagen:0.6.5
+    confluent-hub install --no-prompt confluentinc/kafka-connect-datagen:0.6.5 && \
+    confluent-hub install --no-prompt mongodb/kafka-connect-mongodb:1.12.0
 
 USER root
 RUN yum install jq -y
