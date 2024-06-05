@@ -1,7 +1,7 @@
 {
-  "name": "FF_VII_Ally_Updates_Connector",
+  "name": "FF_VII_Ally_Updates_Postgres_Sink_Connector",
   "config": {
-    "name": "FF_VII_Ally_Updates_Connector",
+    "name": "FF_VII_Ally_Updates_Postgres_Sink_Connector",
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
     "topics": "ff_vii.ally_updates.v1",
     "errors.log.enable": "true",
