@@ -66,10 +66,16 @@ services:
     depends_on:
       - broker
       - schema-registry
-      - postgres
+#      - postgres
     ports:
       - "8083:8083"
       - "8000:8000"
+    healthcheck:
+      test: curl --fail http://localhost:8083/connectors || exit 1
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
     environment:
       CONNECT_BOOTSTRAP_SERVERS: 'broker:29092'
       CONNECT_REST_ADVERTISED_HOST_NAME: connect
@@ -82,8 +88,9 @@ services:
       CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
-      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+#      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+#      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
       # CLASSPATH required due to CC-2422
       CLASSPATH: /usr/share/java/monitoring-interceptors/monitoring-interceptors-7.3.0.jar
       CONNECT_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
@@ -92,6 +99,7 @@ services:
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
       CONNECT_LOG4J_APPENDER_STDOUT_LAYOUT_CONVERSIONPATTERN: "[%d] %p %X{connector.context}%m (%c:%L)%n"
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000"
+
   control-center:
     image: confluentinc/cp-enterprise-control-center:7.6.0
     restart: on-failure:3
@@ -100,7 +108,7 @@ services:
       - broker
       - schema-registry
 #      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
-      - ksqldb-server
+#      - ksqldb-server
     ports:
       - "9021:9021"
     environment:
@@ -115,84 +123,107 @@ services:
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
 
-  ksqldb-server:
-    image: confluentinc/cp-ksqldb-server:7.6.0
-    restart: on-failure:3
-    hostname: ksqldb-server
-    depends_on:
-      - broker
-#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
+#  ksqldb-server:
+#    image: confluentinc/cp-ksqldb-server:7.6.0
+#    restart: on-failure:3
+#    hostname: ksqldb-server
+#    depends_on:
+#      - broker
+##      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
+#    ports:
+#      - "8088:8088"
+#    environment:
+#      KSQL_CONFIG_DIR: "/etc/ksql"
+#      KSQL_BOOTSTRAP_SERVERS: "broker:29092"
+#      KSQL_HOST_NAME: ksqldb-server
+#      KSQL_LISTENERS: "http://0.0.0.0:8088"
+#      KSQL_CACHE_MAX_BYTES_BUFFERING: 0
+#      KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+#      KSQL_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
+#      KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
+#      KSQL_KSQL_CONNECT_URL: "http://connect:8083"
+#      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_REPLICATION_FACTOR: 1
+#      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: 'true'
+#      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
+
+#  ksqldb-cli:
+#    image: confluentinc/cp-ksqldb-cli:7.6.0
+#    restart: on-failure:3
+#    depends_on:
+#      - broker
+##      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
+#      - ksqldb-server
+#    entrypoint: /bin/sh
+#    tty: true
+
+#  ksql-datagen:
+#    image: confluentinc/ksqldb-examples:7.6.0
+#    restart: on-failure:3
+#    hostname: ksql-datagen
+#    depends_on:
+#      - ksqldb-server
+#      - broker
+#      - schema-registry
+##      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
+#    command: "bash -c 'echo Waiting for Kafka to be ready... && \
+#                       cub kafka-ready -b broker:29092 1 40 && \
+#                       echo Waiting for Confluent Schema Registry to be ready... && \
+#                       cub sr-ready schema-registry 8081 40 && \
+#                       echo Waiting a few seconds for topic creation to finish... && \
+#                       sleep 11 && \
+#                       tail -f /dev/null'"
+#    environment:
+#      KSQL_CONFIG_DIR: "/etc/ksql"
+#      STREAMS_BOOTSTRAP_SERVERS: broker:29092
+#      STREAMS_SCHEMA_REGISTRY_HOST: schema-registry
+#      STREAMS_SCHEMA_REGISTRY_PORT: 8081
+
+#  rest-proxy:
+#    image: confluentinc/cp-kafka-rest:7.6.0
+#    restart: on-failure:3
+#    depends_on:
+#      - broker
+#      - schema-registry
+#    ports:
+#      - 8082:8082
+#    hostname: rest-proxy
+#    environment:
+#      KAFKA_REST_HOST_NAME: rest-proxy
+#      KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
+#      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+#      KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+
+#  postgres:
+#    image: postgres:16-alpine
+#    restart: on-failure:3
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      POSTGRES_USER: kafka_connect_user
+#      POSTGRES_PASSWORD: kafka_connect_password
+#      POSTGRES_DB: kafka_connect
+#    volumes:
+#      - ./db/:/docker-entrypoint-initdb.d/
+
+#  postgres:
+#    image: postgres:16-alpine
+#    restart: on-failure:3
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      POSTGRES_USER: kafka_connect_user
+#      POSTGRES_PASSWORD: kafka_connect_password
+#      POSTGRES_DB: kafka_connect
+#    volumes:
+#      - ./db/:/docker-entrypoint-initdb.d/
+
+  mysql:
+    image: mysql
+    restart: unless-stopped
     ports:
-      - "8088:8088"
+      - "3306:3306"
     environment:
-      KSQL_CONFIG_DIR: "/etc/ksql"
-      KSQL_BOOTSTRAP_SERVERS: "broker:29092"
-      KSQL_HOST_NAME: ksqldb-server
-      KSQL_LISTENERS: "http://0.0.0.0:8088"
-      KSQL_CACHE_MAX_BYTES_BUFFERING: 0
-      KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
-      KSQL_PRODUCER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor"
-      KSQL_CONSUMER_INTERCEPTOR_CLASSES: "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor"
-      KSQL_KSQL_CONNECT_URL: "http://connect:8083"
-      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_REPLICATION_FACTOR: 1
-      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: 'true'
-      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
-
-  ksqldb-cli:
-    image: confluentinc/cp-ksqldb-cli:7.6.0
-    restart: on-failure:3
-    depends_on:
-      - broker
-#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
-      - ksqldb-server
-    entrypoint: /bin/sh
-    tty: true
-
-  ksql-datagen:
-    image: confluentinc/ksqldb-examples:7.6.0
-    restart: on-failure:3
-    hostname: ksql-datagen
-    depends_on:
-      - ksqldb-server
-      - broker
-      - schema-registry
-#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
-    command: "bash -c 'echo Waiting for Kafka to be ready... && \
-                       cub kafka-ready -b broker:29092 1 40 && \
-                       echo Waiting for Confluent Schema Registry to be ready... && \
-                       cub sr-ready schema-registry 8081 40 && \
-                       echo Waiting a few seconds for topic creation to finish... && \
-                       sleep 11 && \
-                       tail -f /dev/null'"
-    environment:
-      KSQL_CONFIG_DIR: "/etc/ksql"
-      STREAMS_BOOTSTRAP_SERVERS: broker:29092
-      STREAMS_SCHEMA_REGISTRY_HOST: schema-registry
-      STREAMS_SCHEMA_REGISTRY_PORT: 8081
-
-  rest-proxy:
-    image: confluentinc/cp-kafka-rest:7.6.0
-    restart: on-failure:3
-    depends_on:
-      - broker
-      - schema-registry
-    ports:
-      - 8082:8082
-    hostname: rest-proxy
-    environment:
-      KAFKA_REST_HOST_NAME: rest-proxy
-      KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
-      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
-      KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
-
-  postgres:
-    image: postgres:16-alpine
-    restart: on-failure:3
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: kafka_connect_user
-      POSTGRES_PASSWORD: kafka_connect_password
-      POSTGRES_DB: kafka_connect
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: final_fantasy_vii_db
     volumes:
-      - ./db/:/docker-entrypoint-initdb.d/
+      - ./db-mysql/:/docker-entrypoint-initdb.d/

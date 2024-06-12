@@ -1,0 +1,29 @@
+{
+  "name": "FF_VII_Battle_Outcomes_Source_Connector_incrementing-SCHEMA",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "tasks.max": "1",
+    "value.converter": "io.confluent.connect.json.JsonSchemaConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "true",
+    "value.converter.json.fail.invalid.schema": "true",
+    "value.converter.auto.register.schemas": "false",
+    "value.converter.use.latest.version": "true",
+    "value.converter.latest.compatibility.strict": "false",
+    "connection.url": "jdbc:mysql://mysql:3306/final_fantasy_vii_db",
+    "connection.user": "root",
+    "connection.password": "admin",
+    "table.whitelist": "final_fantasy_vii_battle_outcome",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "validate.non.null": "true",
+    "poll.interval.ms": "5000",
+    "topic.prefix": "jdbc-source_mysql-SCHEMA__",
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+    "errors.deadletterqueue.topic.name": "jdbc-source_mysql-NO-SCHEMA.DLT",
+    "errors.deadletterqueue.topic.replication.factor": "1",
+    "errors.deadletterqueue.context.headers.enable": "true"
+  }
+}

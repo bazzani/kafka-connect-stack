@@ -1,0 +1,26 @@
+{
+  "title": "cloud-strife-update",
+  "description": "Auto generated JSON schema based on the 'cloud-strife-update' file",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 20
+    },
+    "exp": {
+      "type": "integer",
+      "minimum": 50
+    },
+    "ap": {
+      "type": "integer",
+      "maximum": 99
+    }
+  }
+}
+
+
+{\"title\":\"cloud-strife-update\",\"description\":\"Auto generated JSON schema based on the 'cloud-strife-update' file\",\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\",\"minLength\":3,\"maxLength\":20},\"exp\":{\"type\":\"integer\"},\"ap\":{\"type\":\"integer\",\"maximum\":99}}}
