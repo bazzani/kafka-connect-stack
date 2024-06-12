@@ -1,0 +1,4 @@
+{
+  "schemaType": "JSON",
+  "schema": "{\"title\":\"user-data\",\"description\":\"User Data sourced from Kafka Connect\",\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"number\",\"minimum\":1},\"name\":{\"type\":\"string\",\"maxLength\":20},\"age\":{\"type\":\"number\",\"minimum\":0,\"maximum\":125}}}"
+}
