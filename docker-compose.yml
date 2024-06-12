@@ -79,6 +79,7 @@ services:
       - broker
       - schema-registry
       - postgres
+      - mysql
     ports:
       - "8083:8083"
       - "8000:8000"
@@ -118,7 +119,7 @@ services:
     depends_on:
       - broker
       - schema-registry
-#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
+      #      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
       - ksqldb-server
     ports:
       - "9021:9021"
@@ -140,7 +141,7 @@ services:
     hostname: ksqldb-server
     depends_on:
       - broker
-#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
+    #      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
     ports:
       - "8088:8088"
     environment:
@@ -162,7 +163,7 @@ services:
     restart: on-failure:3
     depends_on:
       - broker
-#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
+      #      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
       - ksqldb-server
     entrypoint: /bin/sh
     tty: true
@@ -175,7 +176,7 @@ services:
       - ksqldb-server
       - broker
       - schema-registry
-#      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
+    #      - connect # disabling dependency so that we can deploy connect more quickly and not recreate this service
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
                        cub kafka-ready -b broker:29092 1 40 && \
                        echo Waiting for Confluent Schema Registry to be ready... && \
@@ -215,3 +216,14 @@ services:
       POSTGRES_DB: kafka_connect
     volumes:
       - ./db/:/docker-entrypoint-initdb.d/
+
+  mysql:
+    image: mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: kafka_connect
+    volumes:
+      - ./db-mysql/:/docker-entrypoint-initdb.d/

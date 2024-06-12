@@ -2,9 +2,9 @@ package com.bevans.kafka.connect.springboot.ffvii;
 
 import com.bevans.avro.ffvii.FFViiAllyUpdate;
 import com.bevans.avro.ffvii.weapon.FFViiAllyWeapon;
-import com.bevans.kafka.connect.springboot.ffvii.exception.FFVIIException;
 import com.bevans.kafka.connect.springboot.content.ContentLoadException;
 import com.bevans.kafka.connect.springboot.content.ContentLoader;
+import com.bevans.kafka.connect.springboot.ffvii.exception.FFVIIException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.Schema;

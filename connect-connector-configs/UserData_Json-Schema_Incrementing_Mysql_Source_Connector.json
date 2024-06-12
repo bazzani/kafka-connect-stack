@@ -1,0 +1,26 @@
+{
+  "name": "UserData_Json-Schema_Incrementing_Mysql_Source_Connector",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.json.JsonSchemaConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+    "value.converter.use.latest.version": "true",
+    "value.converter.auto.register.schemas": "false",
+    "value.converter.json.fail.invalid.schema": "true",
+    "value.converter.latest.compatibility.strict": "false",
+    "connection.url": "jdbc:mysql://mysql:3306/kafka_connect",
+    "connection.user": "root",
+    "connection.password": "admin",
+    "table.whitelist": "user_data",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "validate.non.null": "true",
+    "poll.interval.ms": "500",
+    "topic.prefix": "jdbc-source-mysql-Json-Schema__",
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true"
+  }
+}

@@ -12,7 +12,8 @@ plugins {
 }
 
 ext {
-    kafkaAvroVersion = '7.6.0'
+    kafkaVersion = '7.6.0'
+    mysqlConnectorVersion = '8.4.0'
 }
 
 dependencies {
@@ -22,10 +23,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.kafka:spring-kafka'
 
-    implementation("io.confluent:kafka-avro-serializer:${kafkaAvroVersion}")
+    implementation("io.confluent:kafka-avro-serializer:${kafkaVersion}")
+
     implementation 'org.postgresql:postgresql'
+    implementation("com.mysql:mysql-connector-j:${mysqlConnectorVersion}")
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation("io.confluent:kafka-connect-json-schema-converter:${kafkaVersion}")
 }
 
 
