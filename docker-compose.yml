@@ -43,6 +43,12 @@ services:
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+    healthcheck:
+      test: if [ -z "$(kafka-topics --list --bootstrap-server localhost:9092)" ]; then exit 1; fi
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.6.0
@@ -56,6 +62,12 @@ services:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    healthcheck:
+      test: if [ $(curl -s -o /dev/null -w %{http_code} http://localhost:8081/) -ne 200 ]; then exit 1; fi
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
 
   connect:
     build:
@@ -92,6 +104,13 @@ services:
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
       CONNECT_LOG4J_APPENDER_STDOUT_LAYOUT_CONVERSIONPATTERN: "[%d] %p %X{connector.context}%m (%c:%L)%n"
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000"
+    healthcheck:
+      test: if [ $(curl -s -o /dev/null -w %{http_code} http://localhost:8083/connectors) -ne 200 ]; then exit 1; fi
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
+
   control-center:
     image: confluentinc/cp-enterprise-control-center:7.6.0
     restart: on-failure:3
