@@ -17,6 +17,9 @@ USER appuser
 RUN confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:10.7.6 && \
     confluent-hub install --no-prompt confluentinc/kafka-connect-datagen:0.6.5
 
+RUN confluent-hub install --no-prompt confluentinc/kafka-connect-gcp-pubsub:1.2.5 && \
+    confluent-hub install --no-prompt jcustenborder/kafka-connect-json-schema:0.2.5
+
 USER root
 RUN yum install jq -y
 
@@ -26,6 +29,8 @@ USER appuser
 
 COPY connect-scripts /connect-scripts
 COPY ./connect-smt-lib/build/libs/connect-smt-lib-*.jar /usr/share/java/kafka
+COPY ./credentials /credentials
+COPY schemas/gcp-pubsub-FromJson-schema.json /schemas/gcp-pubsub-FromJson-schema.json
 COPY connect-connector-configs /connect-connector-configs
 
 ENTRYPOINT ["sh","/connect-scripts/connect-entrypoint.sh"]
