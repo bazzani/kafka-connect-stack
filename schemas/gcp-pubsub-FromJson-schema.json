@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PubSubData",
+  "type": "object",
+  "properties": {
+    "OrderNumber": {
+      "type": "string"
+    },
+    "SiteId": {
+      "type": "string"
+    },
+    "Locale": {
+      "type": "string"
+    },
+    "CreatedTime": {
+      "type": "string"
+    },
+    "AddressId": {
+      "type": "integer"
+    },
+    "OrderValue": {
+      "type": "number"
+    }
+  }
+}
