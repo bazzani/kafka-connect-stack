@@ -3,9 +3,10 @@ spring:
     bootstrap-servers: "localhost:9092"
     schema-registry-url: http://localhost:8081
   datasource:
-    url: "jdbc:postgresql://localhost:5432/kafka_connect"
-    username: "kafka_connect_user"
-    password: "kafka_connect_password"
+    postgres:
+      url: "jdbc:postgresql://localhost:5432/kafka_connect"
+      username: "kafka_connect_user"
+      password: "kafka_connect_password"
 logging:
   level:
     org.apache.kafka.clients.producer: warn

@@ -1,6 +1,6 @@
-package com.bevans.kafka.connect.springboot.data;
+package com.bevans.kafka.connect.springboot.data.ally;
 
-import com.bevans.kafka.connect.springboot.data.entity.FinalFantasyViiAllyUpdate;
+import com.bevans.kafka.connect.springboot.data.ally.entity.FinalFantasyViiAllyUpdate;
 import org.springframework.data.repository.Repository;
 
 import java.util.List;
