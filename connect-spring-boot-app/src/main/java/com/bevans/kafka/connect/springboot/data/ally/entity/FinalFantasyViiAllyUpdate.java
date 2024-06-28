@@ -1,4 +1,4 @@
-package com.bevans.kafka.connect.springboot.data.entity;
+package com.bevans.kafka.connect.springboot.data.ally.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.bevans.kafka.connect.springboot;
 
-import com.bevans.kafka.connect.springboot.data.FFVIIAllyUpdateRepository;
+import com.bevans.kafka.connect.springboot.data.ally.FFVIIAllyUpdateRepository;
 import com.bevans.kafka.connect.springboot.ffvii.FFVIIAllyUpdateCreator;
 import com.bevans.kafka.connect.springboot.kafka.KafkaProducer;
 import org.json.JSONArray;
