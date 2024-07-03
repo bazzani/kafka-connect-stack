@@ -3,6 +3,8 @@ package com.bevans.kafka.connect.springboot.ffvii;
 import com.bevans.avro.ffvii.FFViiAllyUpdate;
 import com.bevans.avro.ffvii.weapon.FFViiAllyWeapon;
 import com.bevans.kafka.connect.springboot.ffvii.exception.FFVIIException;
+import com.bevans.kafka.connect.springboot.content.ContentLoadException;
+import com.bevans.kafka.connect.springboot.content.ContentLoader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.Schema;
@@ -11,9 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 @Component
 public class FFVIIAllyUpdateCreator {
     @Value("classpath:avro/ff_vii.ally_updates.v1-value.avsc")
@@ -21,8 +20,15 @@ public class FFVIIAllyUpdateCreator {
     @Value("classpath:avro-data/cloud-strife-update.json")
     private Resource avroDataFile;
 
-    private final ObjectMapper mapper = new ObjectMapper();
-    private final Schema.Parser parser = new Schema.Parser();
+    private final ContentLoader contentLoader;
+    private final ObjectMapper mapper;
+    private final Schema.Parser parser;
+
+    public FFVIIAllyUpdateCreator(ContentLoader contentLoader) {
+        this.contentLoader = contentLoader;
+        this.mapper = new ObjectMapper();
+        this.parser = new Schema.Parser();
+    }
 
     public GenericData.Record createAvroRecord(String name) {
         try {
@@ -36,25 +42,20 @@ public class FFVIIAllyUpdateCreator {
     }
 
     public FFViiAllyUpdate getAvroData() {
-        var avroDataString = getStringFromResource(avroDataFile);
-
         try {
+            var avroDataString = contentLoader.getStringFromResource(avroDataFile);
             return mapper.readValue(avroDataString, FFViiAllyUpdate.class);
-        } catch (JsonProcessingException e) {
+        } catch (ContentLoadException | JsonProcessingException e) {
             throw new FFVIIException("Error processing Avro Data Json", e);
         }
     }
 
     private Schema getAvroSchema() {
-        var avroSchemaString = getStringFromResource(avroSchemaFile);
-        return parser.parse(avroSchemaString);
-    }
-
-    private String getStringFromResource(Resource resource) {
         try {
-            return resource.getContentAsString(StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new FFVIIException("Unable to locate resource", e);
+            var avroSchemaString = contentLoader.getStringFromResource(avroSchemaFile);
+            return parser.parse(avroSchemaString);
+        } catch (ContentLoadException e) {
+            throw new FFVIIException("Error loading Avro schema", e);
         }
     }
 
