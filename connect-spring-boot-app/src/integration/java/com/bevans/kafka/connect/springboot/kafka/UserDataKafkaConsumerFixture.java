@@ -13,7 +13,7 @@ import java.util.Optional;
 import static com.bevans.kafka.connect.springboot.kafka.KafkaUserDataTestConfiguration.USER_DATA_TOPIC_NAME;
 
 @Slf4j
-public class KafkaUserDataConsumerFixture {
+public class UserDataKafkaConsumerFixture {
     private final List<ConsumerRecord<String, LinkedHashMap<String, Object>>> received = new ArrayList<>();
 
     @KafkaListener(topics = USER_DATA_TOPIC_NAME, groupId = "user-data-test-consumer-group")

@@ -40,8 +40,8 @@ public class KafkaUserDataTestConfiguration {
     private Resource jsonSchemaFile;
 
     @Bean
-    public KafkaUserDataConsumerFixture kafkaUserDataConsumerFixture() {
-        return new KafkaUserDataConsumerFixture();
+    public UserDataKafkaConsumerFixture kafkaUserDataConsumerFixture() {
+        return new UserDataKafkaConsumerFixture();
     }
 
     @Bean

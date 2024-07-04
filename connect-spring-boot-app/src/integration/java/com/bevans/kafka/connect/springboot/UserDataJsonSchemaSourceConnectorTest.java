@@ -2,7 +2,7 @@ package com.bevans.kafka.connect.springboot;
 
 import com.bevans.kafka.connect.springboot.data.user.UserData;
 import com.bevans.kafka.connect.springboot.data.user.UserDataRepository;
-import com.bevans.kafka.connect.springboot.kafka.KafkaUserDataConsumerFixture;
+import com.bevans.kafka.connect.springboot.kafka.UserDataKafkaConsumerFixture;
 import com.bevans.kafka.connect.springboot.kafka.KafkaUserDataTestConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,18 +21,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @Import(KafkaUserDataTestConfiguration.class)
 public class UserDataJsonSchemaSourceConnectorTest {
     private final UserDataRepository userDataRepository;
-    private final KafkaUserDataConsumerFixture kafkaUserDataConsumerFixture;
+    private final UserDataKafkaConsumerFixture userDataKafkaConsumerFixture;
 
     @Autowired
     public UserDataJsonSchemaSourceConnectorTest(UserDataRepository userDataRepository,
-                                                 KafkaUserDataConsumerFixture kafkaUserDataConsumerFixture) {
+                                                 UserDataKafkaConsumerFixture userDataKafkaConsumerFixture) {
         this.userDataRepository = userDataRepository;
-        this.kafkaUserDataConsumerFixture = kafkaUserDataConsumerFixture;
+        this.userDataKafkaConsumerFixture = userDataKafkaConsumerFixture;
     }
 
     @BeforeEach
     public void setup() throws InterruptedException {
-        kafkaUserDataConsumerFixture.clearRecords();
+        userDataKafkaConsumerFixture.clearRecords();
         userDataRepository.deleteAll();
         Thread.sleep(500L);
     }
@@ -73,7 +73,7 @@ public class UserDataJsonSchemaSourceConnectorTest {
         saveUserAndTakeANap(goodUser);
 
         // when
-        var latestKafkaRecord = kafkaUserDataConsumerFixture.getLatestKafkaRecord();
+        var latestKafkaRecord = userDataKafkaConsumerFixture.getLatestKafkaRecord();
 
         // then
         assertTrue(latestKafkaRecord.isPresent());
@@ -96,7 +96,7 @@ public class UserDataJsonSchemaSourceConnectorTest {
         saveUserAndTakeANap(badUser);
 
         // when
-        var latestKafkaRecord = kafkaUserDataConsumerFixture.getLatestKafkaRecord();
+        var latestKafkaRecord = userDataKafkaConsumerFixture.getLatestKafkaRecord();
 
         // then
         assertFalse(latestKafkaRecord.isPresent());
