@@ -91,7 +91,7 @@ public class UserDataJsonSchemaSourceConnectorTest {
         // given
         var badUser = UserData.builder()
                 .name("Walter White is really Heisenberg, he is the one who knocks!") // name is too long
-                .age(126)                                   // age is too old
+                .age(126)                                                             // age is too old
                 .build();
         saveUserAndTakeANap(badUser);
 
