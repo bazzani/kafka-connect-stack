@@ -3,7 +3,7 @@ package com.bevans.kafka.connect.springboot;
 import com.bevans.kafka.connect.springboot.data.user.UserData;
 import com.bevans.kafka.connect.springboot.data.user.UserDataRepository;
 import com.bevans.kafka.connect.springboot.kafka.UserDataKafkaConsumerFixture;
-import com.bevans.kafka.connect.springboot.kafka.KafkaUserDataTestConfiguration;
+import com.bevans.kafka.connect.springboot.kafka.UserDataKafkaTestConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Import(KafkaUserDataTestConfiguration.class)
+@Import(UserDataKafkaTestConfig.class)
 public class UserDataJsonSchemaSourceConnectorTest {
     private final UserDataRepository userDataRepository;
     private final UserDataKafkaConsumerFixture userDataKafkaConsumerFixture;

@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.bevans.kafka.connect.springboot.kafka.KafkaUserDataTestConfiguration.USER_DATA_TOPIC_NAME;
+import static com.bevans.kafka.connect.springboot.kafka.UserDataKafkaTestConfig.USER_DATA_TOPIC_NAME;
 
 @Slf4j
 public class UserDataKafkaConsumerFixture {
