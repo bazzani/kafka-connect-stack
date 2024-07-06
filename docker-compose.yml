@@ -79,6 +79,7 @@ services:
       - broker
       - schema-registry
       - postgres
+      - mysql
     ports:
       - "8083:8083"
       - "8000:8000"
@@ -215,3 +216,14 @@ services:
       POSTGRES_DB: kafka_connect
     volumes:
       - ./db/:/docker-entrypoint-initdb.d/
+
+  mysql:
+    image: mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: kafka_connect
+    volumes:
+      - ./db-mysql/:/docker-entrypoint-initdb.d/

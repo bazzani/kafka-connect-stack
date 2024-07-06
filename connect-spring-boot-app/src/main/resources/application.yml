@@ -4,6 +4,10 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    consumer:
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer
     properties:
       schema.registry.url: http://localhost:8081
   datasource:
@@ -11,6 +15,10 @@ spring:
       url: "jdbc:postgresql://localhost:5432/kafka_connect"
       username: "kafka_connect_user"
       password: "kafka_connect_password"
+    mysql:
+      url: "jdbc:mysql://localhost:3306/kafka_connect"
+      username: "root"
+      password: "admin"
 logging:
   level:
     org.apache.kafka.clients.producer: warn

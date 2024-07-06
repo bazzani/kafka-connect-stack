@@ -19,6 +19,9 @@ RUN confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:10.7.6 && 
 
 USER root
 RUN yum install jq -y
+
+RUN wget -O /usr/share/java/kafka/mysql-connector-j-8.4.0.jar \
+    https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.4.0/mysql-connector-j-8.4.0.jar
 USER appuser
 
 COPY connect-scripts /connect-scripts
