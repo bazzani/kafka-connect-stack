@@ -4,7 +4,6 @@ import com.bevans.kafka.connect.springboot.data.user.UserData;
 import com.bevans.kafka.connect.springboot.data.user.UserDataRepository;
 import com.bevans.kafka.connect.springboot.user.UserDataKafkaConsumerFixture;
 import com.bevans.kafka.connect.springboot.user.UserDataKafkaTestConfig;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,16 +72,15 @@ public class UserDataJsonSchemaSourceConnectorTest {
         saveUserAndTakeANap(goodUser);
 
         // when
-        var latestKafkaRecord = userDataKafkaConsumerFixture.getLatestKafkaRecord();
+        var latestUserData = userDataKafkaConsumerFixture.getLatestUserData();
 
         // then
-        assertTrue(latestKafkaRecord.isPresent());
+        assertTrue(latestUserData.isPresent());
 
-        var consumerRecord = latestKafkaRecord.get();
-        var userFromTopic = new ObjectMapper().convertValue(consumerRecord.value(), UserData.class);
+        var userData = latestUserData.get();
         assertAll(
-                () -> assertThat(userFromTopic.getName()).isEqualTo(goodUser.getName()),
-                () -> assertThat(userFromTopic.getAge()).isEqualTo(goodUser.getAge())
+                () -> assertThat(userData.getName()).isEqualTo(goodUser.getName()),
+                () -> assertThat(userData.getAge()).isEqualTo(goodUser.getAge())
         );
     }
 
@@ -96,10 +94,10 @@ public class UserDataJsonSchemaSourceConnectorTest {
         saveUserAndTakeANap(badUser);
 
         // when
-        var latestKafkaRecord = userDataKafkaConsumerFixture.getLatestKafkaRecord();
+        var latestUserData = userDataKafkaConsumerFixture.getLatestUserData();
 
         // then
-        assertFalse(latestKafkaRecord.isPresent());
+        assertFalse(latestUserData.isPresent());
     }
 
     private void saveUserAndTakeANap(UserData userDataToSave) throws InterruptedException {
