@@ -2,8 +2,8 @@ package com.bevans.kafka.connect.springboot;
 
 import com.bevans.kafka.connect.springboot.data.user.UserData;
 import com.bevans.kafka.connect.springboot.data.user.UserDataRepository;
-import com.bevans.kafka.connect.springboot.kafka.UserDataKafkaConsumerFixture;
-import com.bevans.kafka.connect.springboot.kafka.UserDataKafkaTestConfig;
+import com.bevans.kafka.connect.springboot.user.UserDataKafkaConsumerFixture;
+import com.bevans.kafka.connect.springboot.user.UserDataKafkaTestConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

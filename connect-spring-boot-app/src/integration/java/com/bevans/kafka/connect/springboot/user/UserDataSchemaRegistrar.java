@@ -1,4 +1,4 @@
-package com.bevans.kafka.connect.springboot.kafka;
+package com.bevans.kafka.connect.springboot.user;
 
 import com.bevans.kafka.connect.springboot.content.ContentLoadException;
 import com.bevans.kafka.connect.springboot.content.ContentLoader;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static com.bevans.kafka.connect.springboot.kafka.UserDataKafkaTestConfig.USER_DATA_TOPIC_NAME;
+import static com.bevans.kafka.connect.springboot.user.UserDataKafkaTestConfig.USER_DATA_TOPIC_NAME;
 
 @Component
 @Slf4j

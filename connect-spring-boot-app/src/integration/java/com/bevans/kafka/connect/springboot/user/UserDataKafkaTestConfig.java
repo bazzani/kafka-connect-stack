@@ -1,4 +1,4 @@
-package com.bevans.kafka.connect.springboot.kafka;
+package com.bevans.kafka.connect.springboot.user;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.test.context.TestConfiguration;
