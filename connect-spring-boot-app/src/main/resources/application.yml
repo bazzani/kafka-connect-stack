@@ -5,7 +5,6 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
     consumer:
-      group-id: spring-boot-consumer-group
       auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.json.KafkaJsonSchemaDeserializer
