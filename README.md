@@ -25,6 +25,8 @@
       * [Container logs](#container-logs)
       * [Running Integration tests once](#running-integration-tests-once)
   * [JaCoCo coverage](#jacoco-coverage)
+  * [Manual Tests](#manual-tests)
+    * [GCP Pub Sub Source Connector](#gcp-pub-sub-source-connector)
   * [TODOs](#todos)
 <!-- TOC -->
 
@@ -305,6 +307,35 @@ After running the `./gradlew check` task (included in `build`), you can find the
 code in all the subprojects in the
 [jacoco-report-aggregation/build](jacoco-report-aggregation/build/reports/jacoco/jacocoFullReport/html/index.html)
 directory.
+
+---
+
+## Manual Tests
+
+### GCP Pub Sub Source Connector
+
+1. Create the Kafka Topic specified in
+   the [connector configuration](connect-connector-configs/gcp-pubsub-source-connector.json)
+2. Apply the [JSON schema](schemas/gcp-pubsub-kafka-topic-schema.json) to the Topic value subject
+3. Log in to the [GCP console](https://console.cloud.google.com)
+4. Add the private key credentials file contents from the GCP console for a Service Account that has the
+   `Pub/Sub Subscriber` role - https://console.cloud.google.com/iam-admin/serviceaccounts
+5. Create the GCP topic and subscription specified in
+   the [connector configuration](connect-connector-configs/gcp-pubsub-source-connector.json)
+6. Run this command from a local terminal to produce a message on the GCP topic:
+    - `gcloud pubsub topics publish kafka-connect-topic --message="{\"OrderNumber\":\"8caebe13-3f79-4861-88df-a7953424381b\",\"SiteId\":\"SITE123456\",\"Locale\":\"en-US\",\"CreatedTime\":\"2024-06-19T11:49:46.936983\",\"AddressId\":123,\"OrderValue\":999.99}"`
+    - the expanded payload looks like this:
+      ```json
+      {
+        "OrderNumber": "8caebe13-3f79-4861-88df-a7953424381b",
+        "SiteId": "SITE123456",
+        "Locale": "en-US",
+        "CreatedTime": "2024-06-19T11:49:46.936983",
+        "AddressId": 123,
+        "OrderValue": 999.99
+      }
+      ```
+7. Check the Confluent Control Center UI for a record being produced to the Kafka Topic
 
 ---
 

@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "JSON Data sourced from GCP Pub Sub",
+  "title": "pub-sub-data",
+  "type": "object",
+  "properties": {
+    "AddressId": {
+      "type": "integer"
+    },
+    "CreatedTime": {
+      "maxLength": 26,
+      "type": "string"
+    },
+    "Locale": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 5
+    },
+    "OrderNumber": {
+      "maxLength": 36,
+      "type": "string"
+    },
+    "OrderValue": {
+      "type": "number",
+      "minimum": 10
+    },
+    "SiteId": {
+      "maxLength": 10,
+      "type": "string"
+    }
+  }
+}
